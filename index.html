@@ -210,7 +210,7 @@ body.native .kbhint,body.native #mhint,body.native #legend .keys{display:none}
 /* ayar satırları */
 .srow{transition:background .15s}
 /* sıfırlama onayı: ortada, karartmalı iletişim kutusu */
-#menu #mconf{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(86vw,340px);box-sizing:border-box;background:#fff;border-radius:22px;padding:24px 20px 20px;display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:12px;z-index:60;color:#2c3550;font-weight:600;box-shadow:0 0 0 100vmax rgba(20,30,60,.45),0 24px 60px rgba(20,30,60,.35);animation:pop .2s cubic-bezier(.2,.8,.2,1)}
+#menu #mconf{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(86vw,340px);box-sizing:border-box;background:#fff;border-radius:22px;padding:24px 20px 20px;display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:12px;z-index:60;color:#2c3550;font-weight:600;box-shadow:0 0 0 100vmax rgba(20,30,60,.45),0 24px 60px rgba(20,30,60,.35);animation:popc .2s cubic-bezier(.2,.8,.2,1)}
 #menu #mconf[hidden]{display:none}
 #menu #mconf>span{display:block;font-size:16px;line-height:1.45;text-align:center;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;margin-bottom:4px}
 #menu #mconf button{width:100%;margin:0}
@@ -421,14 +421,33 @@ body.help #legend{background:var(--surface)}
 #welcome.show>*:nth-child(11){animation-delay:.7s}
 .crban{position:fixed;top:0;left:0;right:0;z-index:2000;padding:8px 12px;background:#e8186d;color:#fff;font:700 13px/1.35 -apple-system,BlinkMacSystemFont,system-ui,sans-serif;text-align:center}
 #tamper{position:fixed;inset:0;z-index:99999;background:#12151f;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;font:600 18px/1.55 -apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+/* ortalanmış pencereler için animasyon (ortalama dönüşümünü korur) */
+@keyframes popc{from{opacity:0;transform:translate(-50%,-50%) scale(.92)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+/* ================= çoklu dil ================= */
+.steps em{font-style:normal}
+.srow .val{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--faint);white-space:nowrap}
+.srow .val::after{content:"›";font-size:22px;line-height:1;opacity:.7}
+#langsheet{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,400px);box-sizing:border-box;background:var(--surface);border-radius:22px;padding:18px 16px 16px;z-index:95;box-shadow:0 0 0 100vmax rgba(20,30,60,.45),0 24px 60px rgba(20,30,60,.35);animation:popc .2s cubic-bezier(.2,.8,.2,1);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
+#langsheet[hidden]{display:none}
+.lsh-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);padding:0 6px 12px}
+.lsh-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lsh-grid button{font:inherit;font-size:15px;font-weight:600;padding:12px 8px;border-radius:14px;border:1.5px solid var(--line);background:var(--btn1);color:var(--ink2);cursor:pointer;direction:ltr;transition:transform .1s,border-color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.lsh-grid button.on{border-color:#2bcbd4;box-shadow:0 0 0 3px rgba(43,203,212,.22);color:var(--ink)}
+.lsh-grid button:active{transform:scale(.96)}
+.lsh-grid button[lang=ar]{direction:rtl}
+/* sağdan sola (Arapça): yalnızca metin alanları; oyun alanı, kod ve tuşlar soldan sağa kalır */
+body.rtl .wsub,body.rtl .steps div,body.rtl #status,body.rtl #legend,body.rtl .lcard,body.rtl .srow,body.rtl .shead,body.rtl #mtoast,body.rtl #menu #mconf>span,body.rtl .eMsg,body.rtl .eBest,body.rtl .eUnlock,body.rtl .eTitle,body.rtl .cr,body.rtl .wfoot,body.rtl .wprog small,body.rtl #mhint,body.rtl #tamper>div,body.rtl .lsh-title,body.rtl #wipeLab,body.rtl #mtitle,body.rtl .eLevel{direction:rtl}
+body.rtl #codewrap,body.rtl #code,body.rtl #board,body.rtl #keys,body.rtl #lname{direction:ltr}
+body.rtl .srow .val::after{content:"‹"}
+body.rtl .ln{unicode-bidi:isolate}
 </style>
 </head>
 <body>
 <div id="app">
   <section id="left">
-    <button id="logo" aria-label="Bölümler" title="Bölümler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2" fill="#2bcbd4" stroke="#2bcbd4"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg></button>
+    <button id="logo" data-it="levels" aria-label="Levels" title="Levels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2" fill="#2bcbd4" stroke="#2bcbd4"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg></button>
     <div id="lname"></div>
-    <button id="fsbtn" aria-label="Tam ekran" title="Tam ekran (F)"></button><button id="setbtn" aria-label="Ayarlar" title="Ayarlar"></button><button id="rbtn" aria-label="Baştan" title="Baştan"></button><button id="hbtn" title="Kurallar">?</button>
+    <button id="fsbtn" aria-label="Full screen" title="Full screen (F)"></button><button id="setbtn" data-it="settings" aria-label="Settings" title="Settings"></button><button id="rbtn" data-it="restartT" aria-label="Restart" title="Restart"></button><button id="hbtn" data-it="rules" title="Rules">?</button>
     <div id="keys"></div>
     <div id="boardwrap"><div id="board"><div id="dot"><svg class="tick" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
     
@@ -440,45 +459,69 @@ body.help #legend{background:var(--surface)}
   <section id="right"><div id="codewrap"><div id="code"></div></div></section>
 </div>
 <div id="setmenu" hidden role="menu">
-  <div class="shead">Ayarlar</div>
-  <div class="srow" id="rowSnd" role="switch"><span class="ico" id="icoSnd"></span><span class="lbl">Ses</span><span class="sw"></span></div>
-  <div class="srow" id="rowHap" role="switch"><span class="ico" id="icoHap"></span><span class="lbl">Titreşim</span><span class="sw"></span></div>
-  <div class="shead" style="margin-top:6px">Tema</div>
-  <div class="tseg" id="tseg" role="radiogroup"><button data-t="light"><i></i>Açık</button><button data-t="dark"><i></i>Koyu</button><button data-t="warm"><i></i>Sıcak</button></div>
+  <div class="shead" data-i="settings">Ayarlar</div>
+  <div class="srow" id="rowSnd" role="switch"><span class="ico" id="icoSnd"></span><span class="lbl" data-i="sound">Ses</span><span class="sw"></span></div>
+  <div class="srow" id="rowHap" role="switch"><span class="ico" id="icoHap"></span><span class="lbl" data-i="haptic">Titreşim</span><span class="sw"></span></div>
+  <div class="srow" id="rowLang" role="button"><span class="ico" id="icoLang"></span><span class="lbl" data-i="language">Dil</span><span class="val" id="langVal"></span></div>
+  <div class="shead" style="margin-top:6px" data-i="theme">Tema</div>
+  <div class="tseg" id="tseg" role="radiogroup"><button data-t="light"><i></i><span data-i="themeLight">Açık</span></button><button data-t="dark"><i></i><span data-i="themeDark">Koyu</span></button><button data-t="warm"><i></i><span data-i="themeWarm">Sıcak</span></button></div>
 </div>
-<div id="helpBackdrop"></div><button id="helpClose" aria-label="Kapat"></button>
+<div id="helpBackdrop"></div><button id="helpClose" data-it="close" aria-label="Close"></button>
+<div id="langsheet" hidden role="dialog"><div class="lsh-title" data-i="language">Dil</div><div class="lsh-grid" id="langGrid"></div></div>
 <div id="endscreen" hidden>
   <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="starGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#ffab1a"/></linearGradient></defs></svg>
-  <div class="eTitle">Bölüm tamamlandı</div>
+  <div class="eTitle" data-i="eTitle">Bölüm tamamlandı</div>
   <div class="eLevel" id="eLevel"></div>
   <div class="eStars" id="eStars"></div>
   <div class="eMsg" id="eMsg"></div>
-  <div class="eStats"><div><b id="eTries">0</b><span>Deneme</span></div><div><b id="eTime">0:00</b><span>Süre</span></div></div>
+  <div class="eStats"><div><b id="eTries">0</b><span data-i="eTries">Deneme</span></div><div><b id="eTime">0:00</b><span data-i="eTime">Süre</span></div></div>
   <div class="eBest" id="eBest"></div>
   <div class="eUnlock" id="eUnlock"></div>
-  <button id="eNext">Sonraki bölüm<span class="kbhint"> (Enter)</span></button>
-  <div class="eRow"><button class="ghost" id="eAgain">↺ Tekrar oyna</button><button class="ghost" id="eHome">⌂ Ana ekran</button></div>
+  <button id="eNext"><span data-i="eNext">Sonraki bölüm</span><span class="kbhint"> (Enter)</span></button>
+  <div class="eRow"><button class="ghost" id="eAgain" data-i="eAgain">↺ Tekrar oyna</button><button class="ghost" id="eHome" data-i="home">⌂ Ana ekran</button></div>
 </div>
 <div id="wipe"><div id="wipeLab"></div></div>
-<div id="splash"><div class="logo4"><i></i><i></i><i></i><i></i><b></b></div><div class="sname">Kod Noktası</div><div class="stag">oku · çalıştır · hamle yap</div></div>
+<div id="splash"><div class="logo4"><i></i><i></i><i></i><i></i><b></b></div><div class="sname">Kod Noktası</div><div class="stag" data-i="splashTag">oku · çalıştır · hamle yap</div></div>
 <div id="welcome" hidden>
-  <div class="wtools"><button id="wset" aria-label="Ayarlar" title="Ayarlar"></button></div>
+  <div class="wtools"><button id="wset" data-it="settings" aria-label="Settings" title="Settings"></button></div>
   <div class="logo4 loop"><i></i><i></i><i></i><i></i><b></b></div>
   <h1>Kod Noktası</h1>
-  <p class="wsub">Kodu oku. Zihninde çalıştır.<br>Doğru hamleleri yap.</p>
-  <div class="steps"><div><span>1</span>Kodu oku</div><div><span>2</span>Zihninde çalıştır</div><div><span>3</span>Ok tuşlarıyla hamle yap</div></div>
+  <p class="wsub" id="wsub"></p>
+  <div class="steps"><div><span>1</span><em data-i="step1">Kodu oku</em></div><div><span>2</span><em data-i="step2">Zihninde çalıştır</em></div><div><span>3</span><em data-i="step3">Ok tuşlarıyla hamle yap</em></div></div>
   <div class="wprog"><div class="bar"><i id="wbar"></i></div><small id="wtxt"></small></div>
   <button class="primary" id="wplay">Oyna</button>
-  <button class="ghost" id="wlevels">Bölümler</button>
-  <div class="wfoot">100 bölüm · 4 level</div>
+  <button class="ghost" id="wlevels" data-i="stagesBtn">Bölümler</button>
+  <div class="wfoot" data-i="foot">100 bölüm · 4 level</div>
 </div>
-<div id="menu" hidden><div id="mtop"><button id="mback" hidden>‹ Leveller</button><h2 id="mtitle">Leveller</h2></div><div id="lvlList"></div><div id="mgrid" hidden></div><div id="mtoast"></div><button id="mclose">Kapat<span class="kbhint"> (Esc)</span></button><button id="mhome">⌂ Ana ekran</button><div id="mhint">← ↑ ↓ → seç · Enter başla · Esc kapat</div><button id="mreset">↺ Tüm ilerlemeyi sıfırla<span class="kbhint"> (R)</span></button><div id="mconf" hidden><span>Tüm bölümler kilitlenecek ve ilerleme silinecek. Emin misin?</span><button id="myes">Evet, sıfırla<span class="kbhint"> (Enter)</span></button><button id="mno">Vazgeç<span class="kbhint"> (Esc)</span></button></div></div>
+<div id="menu" hidden><div id="mtop"><button id="mback" hidden>‹ Leveller</button><h2 id="mtitle">Leveller</h2></div><div id="lvlList"></div><div id="mgrid" hidden></div><div id="mtoast"></div><button id="mclose"><span data-i="close">Kapat</span><span class="kbhint"> (Esc)</span></button><button id="mhome" data-i="home">⌂ Ana ekran</button><div id="mhint">← ↑ ↓ → seç · Enter başla · Esc kapat</div><button id="mreset"><span data-i="reset">↺ Tüm ilerlemeyi sıfırla</span><span class="kbhint"> (R)</span></button><div id="mconf" hidden><span data-i="confirm">Tüm bölümler kilitlenecek ve ilerleme silinecek. Emin misin?</span><button id="myes"><span data-i="yes">Evet, sıfırla</span><span class="kbhint"> (Enter)</span></button><button id="mno"><span data-i="no">Vazgeç</span><span class="kbhint"> (Esc)</span></button></div></div>
 
 <script>
 /*! Kod Noktası — © 2026 Furkan KALE — https://kalefurkan.github.io/kod-noktasi-oyun/ */
 const $=s=>document.querySelector(s);
+
+/* ---------- çoklu dil (i18n) ---------- */
+// 13 dil: tr (kaynak), en, es, fr, de, pt, ru, zh, ja, ko, ar, hi, id
+const I18N={"tr":{"lv0":"Başlangıç","lv1":"Orta","lv2":"Pro","lv3":"Ekspert","level":"Level","levels":"Leveller","chap":"Bölüm {n}","stagesBtn":"Bölümler","mvU":"yukarı","mvR":"sağ","mvD":"aşağı","mvL":"sol","kwRep":"tekrarla","kwWh":"iken","kwIf":"eğer","kwDef":"işlev","ph":"renk","colXs":"koyu kare","colOs":"sarı kare","colPs":"mor kare","fn":{"göz":"göz","düşme":"düşme","kıvrım":"kıvrım","adım":"adım","tara":"tara","çık":"çık","zıpla":"zıpla","dön":"dön"},"settings":"Ayarlar","sound":"Ses","haptic":"Titreşim","theme":"Tema","themeLight":"Açık","themeDark":"Koyu","themeWarm":"Sıcak","language":"Dil","fsEnter":"Tam ekran (F)","fsExit":"Tam ekrandan çık (F)","restartT":"Baştan","rules":"Kurallar","close":"Kapat","tag1":"Kodu oku. Zihninde çalıştır.","tag2":"Doğru hamleleri yap.","step1":"Kodu oku","step2":"Zihninde çalıştır","step3":"Ok tuşlarıyla hamle yap","play":"Oyna","again":"Tekrar oyna","cont":"Devam et · Bölüm {n}","prog":"{d} / {t} bölüm tamamlandı","foot":"100 bölüm · 4 level","splashTag":"oku · çalıştır · hamle yap","crLong":"{n} tarafından geliştirildi","crAbout":"Geliştirici: {n}  ·  © {y}","attempt":"Deneme {n}","stDefault":"Kodu zihninde çalıştır, hamleleri ok tuşlarıyla yap.","stWrong":"Yanlış hamle! Bölüm baştan başlıyor…","stRetry":"Tekrar dene.","stOk":"✓ Doğru!","stAll":"✓ Tüm bölümleri bitirdin! Tebrikler!","stReset":"İlerleme sıfırlandı. Baştan başlıyoruz!","i0":"Kodu oku, aynı hamleleri ok tuşlarıyla yap. Yanlış yaparsan bölüm baştan başlar.","i1":"Komutları yukarıdan aşağıya sırayla uygula.","i6":"{rep} (n) { ... } → içindekileri n kez art arda yap.","i25":"Döngülerin içinde başka döngüler olabilir. Önce içtekini bitir.","i30":"{wh} ✖ { ... } → noktanın altındaki kare koyuysa içindekini yap, kare koyu olmayana kadar tekrarla.","i40":"{if} ● { ... } → noktanın altındaki kare sarıysa içindekini bir kez yap, değilse atla.","i50":"{def} ad () { ... } → sadece tanım. ad() yazılan yerde içindekini yap.","i62":"Bir işlev başka bir işlevi çağırabilir.","lgRep":"{rep} (n) { } → içindekini n kez yap","lgWh":"{wh} [{ph}] { } → noktanın altındaki kare o renkteyken içindekini tekrarla","lgIf":"{if} [{ph}] { } → altındaki kare o renkteyse içindekini bir kez yap","lgFn":"{def} ad () { } → ad() yazılan yerde içindekini yap","kRestart":"baştan","kLevels":"bölümler","kSkip":"atla (bitince)","lvSub":"Bölüm {a}–{b} · {d}/{n} tamamlandı","lvLock":"Açmak için toplam ★ {need} gerekli · şu an {tot}","toastLv":"{lv} {n} · {name} için toplam ★ {need} gerekli. Şu an ★ {tot} var.","toastCh":"Bu bölümü açmak için önce bir önceki bölümü tamamla.","hintLv":"↑ ↓ seç · Enter aç · Esc kapat","hintCh":"← ↑ ↓ → seç · Enter başla · Esc geri","home":"⌂ Ana ekran","reset":"↺ Tüm ilerlemeyi sıfırla","confirm":"Tüm bölümler kilitlenecek ve ilerleme silinecek. Emin misin?","yes":"Evet, sıfırla","no":"Vazgeç","eTitle":"Bölüm tamamlandı","eTries":"Deneme","eTime":"Süre","msg3":"Mükemmel!","msg2":"Çok iyi!","msg1":"Tamamlandı!","newRec":"Yeni rekor!","bestPrev":"En iyi sonucun: {s}","eNext":"Sonraki bölüm","goLevel":"{lv} {n}{sfx} geç","eAgain":"↺ Tekrar oyna","unlocked":"{lv} {n} · {name} açıldı!","needMore":"{lv} {n} için ★ {a}/{b} gerekli. Yıldızını artırmak için önceki bölümleri tekrar oyna.","tmp1":"Bu kopya değiştirilmiş görünüyor.","tmp2":"Orijinal oyun için:","banner":"Orijinal oyun: {n}  —  {u}"},"en":{"lv0":"Beginner","lv1":"Intermediate","lv2":"Pro","lv3":"Expert","level":"Level","levels":"Levels","chap":"Stage {n}","stagesBtn":"Stages","mvU":"up","mvR":"right","mvD":"down","mvL":"left","kwRep":"repeat","kwWh":"while","kwIf":"if","kwDef":"function","ph":"color","colXs":"dark tile","colOs":"yellow tile","colPs":"purple tile","fn":{"göz":"eye","düşme":"drop","kıvrım":"curve","adım":"step","tara":"scan","çık":"climb","zıpla":"jump","dön":"turn"},"settings":"Settings","sound":"Sound","haptic":"Vibration","theme":"Theme","themeLight":"Light","themeDark":"Dark","themeWarm":"Warm","language":"Language","fsEnter":"Full screen (F)","fsExit":"Exit full screen (F)","restartT":"Restart","rules":"Rules","close":"Close","tag1":"Read the code. Run it in your head.","tag2":"Make the right moves.","step1":"Read the code","step2":"Run it in your head","step3":"Move with the arrow keys","play":"Play","again":"Play again","cont":"Continue · Stage {n}","prog":"{d} / {t} stages completed","foot":"100 stages · 4 levels","splashTag":"read · run · move","crLong":"Developed by {n}","crAbout":"Developer: {n}  ·  © {y}","attempt":"Attempt {n}","stDefault":"Run the code in your head, then make the moves with the arrow keys.","stWrong":"Wrong move! The stage restarts…","stRetry":"Try again.","stOk":"✓ Correct!","stAll":"✓ You finished every stage! Congratulations!","stReset":"Progress reset. Starting over!","i0":"Read the code and make the same moves with the arrow keys. A wrong move restarts the stage.","i1":"Follow the commands from top to bottom, in order.","i6":"{rep} (n) { ... } → do what is inside n times in a row.","i25":"Loops can contain other loops. Finish the inner one first.","i30":"{wh} ✖ { ... } → while the tile under the dot is dark, do what is inside; repeat until it is no longer dark.","i40":"{if} ● { ... } → if the tile under the dot is yellow, do what is inside once; otherwise skip it.","i50":"{def} name () { ... } → just a definition. Wherever name() appears, do what is inside.","i62":"A function can call another function.","lgRep":"{rep} (n) { } → do what is inside n times","lgWh":"{wh} [{ph}] { } → repeat what is inside while the tile under the dot is that color","lgIf":"{if} [{ph}] { } → if the tile under the dot is that color, do what is inside once","lgFn":"{def} name () { } → wherever name() appears, do what is inside","kRestart":"restart","kLevels":"levels","kSkip":"skip (when done)","lvSub":"Stages {a}–{b} · {d}/{n} completed","lvLock":"Needs ★ {need} total to unlock · you have {tot}","toastLv":"{lv} {n} · {name} needs ★ {need} in total. You have ★ {tot}.","toastCh":"Finish the previous stage to unlock this one.","hintLv":"↑ ↓ select · Enter open · Esc close","hintCh":"← ↑ ↓ → select · Enter start · Esc back","home":"⌂ Home","reset":"↺ Reset all progress","confirm":"All stages will be locked and your progress deleted. Are you sure?","yes":"Yes, reset","no":"Cancel","eTitle":"Stage complete","eTries":"Attempts","eTime":"Time","msg3":"Perfect!","msg2":"Great!","msg1":"Done!","newRec":"New record!","bestPrev":"Your best: {s}","eNext":"Next stage","goLevel":"Go to {lv} {n}","eAgain":"↺ Play again","unlocked":"{lv} {n} · {name} unlocked!","needMore":"{lv} {n} needs ★ {a}/{b}. Replay earlier stages to earn more stars.","tmp1":"This copy appears to have been modified.","tmp2":"For the original game:","banner":"Original game: {n}  —  {u}"},"es":{"lv0":"Principiante","lv1":"Intermedio","lv2":"Pro","lv3":"Experto","level":"Nivel","levels":"Niveles","chap":"Etapa {n}","stagesBtn":"Etapas","mvU":"arriba","mvR":"derecha","mvD":"abajo","mvL":"izquierda","kwRep":"repetir","kwWh":"mientras","kwIf":"si","kwDef":"función","ph":"color","colXs":"casilla oscura","colOs":"casilla amarilla","colPs":"casilla morada","fn":{"göz":"ojo","düşme":"caer","kıvrım":"curva","adım":"paso","tara":"barrer","çık":"subir","zıpla":"saltar","dön":"girar"},"settings":"Ajustes","sound":"Sonido","haptic":"Vibración","theme":"Tema","themeLight":"Claro","themeDark":"Oscuro","themeWarm":"Cálido","language":"Idioma","fsEnter":"Pantalla completa (F)","fsExit":"Salir de pantalla completa (F)","restartT":"Reiniciar","rules":"Reglas","close":"Cerrar","tag1":"Lee el código. Ejecútalo en tu mente.","tag2":"Haz los movimientos correctos.","step1":"Lee el código","step2":"Ejecútalo en tu mente","step3":"Muévete con las flechas","play":"Jugar","again":"Jugar de nuevo","cont":"Continuar · Etapa {n}","prog":"{d} / {t} etapas completadas","foot":"100 etapas · 4 niveles","splashTag":"lee · ejecuta · mueve","crLong":"Desarrollado por {n}","crAbout":"Desarrollador: {n}  ·  © {y}","attempt":"Intento {n}","stDefault":"Ejecuta el código en tu mente y haz los movimientos con las flechas.","stWrong":"¡Movimiento incorrecto! La etapa se reinicia…","stRetry":"Inténtalo de nuevo.","stOk":"✓ ¡Correcto!","stAll":"✓ ¡Terminaste todas las etapas! ¡Felicidades!","stReset":"Progreso reiniciado. ¡Empezamos de nuevo!","i0":"Lee el código y haz los mismos movimientos con las flechas. Si te equivocas, la etapa se reinicia.","i1":"Sigue los comandos de arriba abajo, en orden.","i6":"{rep} (n) { ... } → haz lo de dentro n veces seguidas.","i25":"Un bucle puede contener otros bucles. Termina primero el de dentro.","i30":"{wh} ✖ { ... } → mientras la casilla bajo el punto sea oscura, haz lo de dentro; repite hasta que deje de serlo.","i40":"{if} ● { ... } → si la casilla bajo el punto es amarilla, haz lo de dentro una vez; si no, sáltalo.","i50":"{def} nombre () { ... } → solo es una definición. Donde aparezca nombre(), haz lo de dentro.","i62":"Una función puede llamar a otra función.","lgRep":"{rep} (n) { } → haz lo de dentro n veces","lgWh":"{wh} [{ph}] { } → repite lo de dentro mientras la casilla bajo el punto tenga ese color","lgIf":"{if} [{ph}] { } → si la casilla bajo el punto tiene ese color, haz lo de dentro una vez","lgFn":"{def} nombre () { } → donde aparezca nombre(), haz lo de dentro","kRestart":"reiniciar","kLevels":"niveles","kSkip":"saltar (al terminar)","lvSub":"Etapas {a}–{b} · {d}/{n} completadas","lvLock":"Necesitas ★ {need} en total para abrirlo · tienes {tot}","toastLv":"{lv} {n} · {name} requiere ★ {need} en total. Tienes ★ {tot}.","toastCh":"Termina la etapa anterior para abrir esta.","hintLv":"↑ ↓ elegir · Enter abrir · Esc cerrar","hintCh":"← ↑ ↓ → elegir · Enter empezar · Esc volver","home":"⌂ Inicio","reset":"↺ Reiniciar todo el progreso","confirm":"Se bloquearán todas las etapas y se borrará tu progreso. ¿Seguro?","yes":"Sí, reiniciar","no":"Cancelar","eTitle":"Etapa completada","eTries":"Intentos","eTime":"Tiempo","msg3":"¡Perfecto!","msg2":"¡Muy bien!","msg1":"¡Completado!","newRec":"¡Nuevo récord!","bestPrev":"Tu mejor resultado: {s}","eNext":"Siguiente etapa","goLevel":"Ir al {lv} {n}","eAgain":"↺ Jugar de nuevo","unlocked":"¡{lv} {n} · {name} desbloqueado!","needMore":"{lv} {n} requiere ★ {a}/{b}. Repite etapas anteriores para ganar más estrellas.","tmp1":"Esta copia parece haber sido modificada.","tmp2":"Para el juego original:","banner":"Juego original: {n}  —  {u}"},"fr":{"lv0":"Débutant","lv1":"Intermédiaire","lv2":"Pro","lv3":"Expert","level":"Niveau","levels":"Niveaux","chap":"Étape {n}","stagesBtn":"Étapes","mvU":"haut","mvR":"droite","mvD":"bas","mvL":"gauche","kwRep":"répéter","kwWh":"tantque","kwIf":"si","kwDef":"fonction","ph":"couleur","colXs":"case foncée","colOs":"case jaune","colPs":"case violette","fn":{"göz":"oeil","düşme":"chute","kıvrım":"courbe","adım":"pas","tara":"scan","çık":"monter","zıpla":"saut","dön":"tour"},"settings":"Réglages","sound":"Son","haptic":"Vibration","theme":"Thème","themeLight":"Clair","themeDark":"Sombre","themeWarm":"Chaud","language":"Langue","fsEnter":"Plein écran (F)","fsExit":"Quitter le plein écran (F)","restartT":"Recommencer","rules":"Règles","close":"Fermer","tag1":"Lis le code. Exécute-le dans ta tête.","tag2":"Fais les bons mouvements.","step1":"Lis le code","step2":"Exécute-le dans ta tête","step3":"Déplace-toi avec les flèches","play":"Jouer","again":"Rejouer","cont":"Continuer · Étape {n}","prog":"{d} / {t} étapes terminées","foot":"100 étapes · 4 niveaux","splashTag":"lis · exécute · joue","crLong":"Développé par {n}","crAbout":"Développeur : {n}  ·  © {y}","attempt":"Essai {n}","stDefault":"Exécute le code dans ta tête, puis joue avec les flèches.","stWrong":"Mauvais coup ! L’étape recommence…","stRetry":"Réessaie.","stOk":"✓ Correct !","stAll":"✓ Tu as terminé toutes les étapes ! Bravo !","stReset":"Progression réinitialisée. On repart de zéro !","i0":"Lis le code et fais les mêmes mouvements avec les flèches. Si tu te trompes, l’étape recommence.","i1":"Suis les commandes de haut en bas, dans l’ordre.","i6":"{rep} (n) { ... } → fais n fois de suite ce qui est à l’intérieur.","i25":"Une boucle peut en contenir d’autres. Termine d’abord la boucle intérieure.","i30":"{wh} ✖ { ... } → tant que la case sous le point est foncée, fais ce qui est à l’intérieur ; répète jusqu’à ce qu’elle ne le soit plus.","i40":"{if} ● { ... } → si la case sous le point est jaune, fais une fois ce qui est à l’intérieur ; sinon, passe.","i50":"{def} nom () { ... } → ce n’est qu’une définition. Là où nom() apparaît, fais ce qu’il contient.","i62":"Une fonction peut en appeler une autre.","lgRep":"{rep} (n) { } → fais n fois ce qui est à l’intérieur","lgWh":"{wh} [{ph}] { } → répète l’intérieur tant que la case sous le point a cette couleur","lgIf":"{if} [{ph}] { } → si la case sous le point a cette couleur, fais l’intérieur une fois","lgFn":"{def} nom () { } → là où nom() apparaît, fais ce qu’il contient","kRestart":"recommencer","kLevels":"niveaux","kSkip":"passer (à la fin)","lvSub":"Étapes {a}–{b} · {d}/{n} terminées","lvLock":"Il faut ★ {need} au total pour déverrouiller · tu en as {tot}","toastLv":"{lv} {n} · {name} demande ★ {need} au total. Tu as ★ {tot}.","toastCh":"Termine l’étape précédente pour débloquer celle-ci.","hintLv":"↑ ↓ choisir · Entrée ouvrir · Échap fermer","hintCh":"← ↑ ↓ → choisir · Entrée démarrer · Échap retour","home":"⌂ Accueil","reset":"↺ Réinitialiser toute la progression","confirm":"Toutes les étapes seront verrouillées et ta progression effacée. Tu es sûr ?","yes":"Oui, réinitialiser","no":"Annuler","eTitle":"Étape terminée","eTries":"Essais","eTime":"Temps","msg3":"Parfait !","msg2":"Très bien !","msg1":"Terminé !","newRec":"Nouveau record !","bestPrev":"Ton meilleur résultat : {s}","eNext":"Étape suivante","goLevel":"Passer au {lv} {n}","eAgain":"↺ Rejouer","unlocked":"{lv} {n} · {name} débloqué !","needMore":"{lv} {n} demande ★ {a}/{b}. Rejoue des étapes précédentes pour gagner plus d’étoiles.","tmp1":"Cette copie semble avoir été modifiée.","tmp2":"Pour le jeu original :","banner":"Jeu original : {n}  —  {u}"},"de":{"lv0":"Anfänger","lv1":"Fortgeschritten","lv2":"Profi","lv3":"Experte","level":"Level","levels":"Levels","chap":"Aufgabe {n}","stagesBtn":"Aufgaben","mvU":"hoch","mvR":"rechts","mvD":"runter","mvL":"links","kwRep":"wiederhole","kwWh":"solange","kwIf":"wenn","kwDef":"funktion","ph":"Farbe","colXs":"dunkles Feld","colOs":"gelbes Feld","colPs":"lila Feld","fn":{"göz":"auge","düşme":"fall","kıvrım":"kurve","adım":"schritt","tara":"scan","çık":"klettern","zıpla":"sprung","dön":"drehen"},"settings":"Einstellungen","sound":"Ton","haptic":"Vibration","theme":"Design","themeLight":"Hell","themeDark":"Dunkel","themeWarm":"Warm","language":"Sprache","fsEnter":"Vollbild (F)","fsExit":"Vollbild beenden (F)","restartT":"Neustart","rules":"Regeln","close":"Schließen","tag1":"Lies den Code. Führe ihn im Kopf aus.","tag2":"Mach die richtigen Züge.","step1":"Lies den Code","step2":"Führe ihn im Kopf aus","step3":"Bewege dich mit den Pfeiltasten","play":"Spielen","again":"Nochmal spielen","cont":"Weiter · Aufgabe {n}","prog":"{d} / {t} Aufgaben abgeschlossen","foot":"100 Aufgaben · 4 Level","splashTag":"lesen · ausführen · ziehen","crLong":"Entwickelt von {n}","crAbout":"Entwickler: {n}  ·  © {y}","attempt":"Versuch {n}","stDefault":"Führe den Code im Kopf aus und mache die Züge mit den Pfeiltasten.","stWrong":"Falscher Zug! Die Aufgabe beginnt von vorn…","stRetry":"Versuch es noch einmal.","stOk":"✓ Richtig!","stAll":"✓ Du hast alle Aufgaben geschafft! Glückwunsch!","stReset":"Fortschritt zurückgesetzt. Wir fangen von vorn an!","i0":"Lies den Code und mache dieselben Züge mit den Pfeiltasten. Bei einem Fehler beginnt die Aufgabe von vorn.","i1":"Befolge die Befehle von oben nach unten der Reihe nach.","i6":"{rep} (n) { ... } → führe den Inhalt n-mal hintereinander aus.","i25":"Schleifen können weitere Schleifen enthalten. Beende zuerst die innere.","i30":"{wh} ✖ { ... } → solange das Feld unter dem Punkt dunkel ist, führe den Inhalt aus; wiederhole, bis es nicht mehr dunkel ist.","i40":"{if} ● { ... } → ist das Feld unter dem Punkt gelb, führe den Inhalt einmal aus; sonst überspringe ihn.","i50":"{def} name () { ... } → nur eine Definition. Wo name() steht, führe den Inhalt aus.","i62":"Eine Funktion kann eine andere Funktion aufrufen.","lgRep":"{rep} (n) { } → führe den Inhalt n-mal aus","lgWh":"{wh} [{ph}] { } → wiederhole den Inhalt, solange das Feld unter dem Punkt diese Farbe hat","lgIf":"{if} [{ph}] { } → hat das Feld unter dem Punkt diese Farbe, führe den Inhalt einmal aus","lgFn":"{def} name () { } → wo name() steht, führe den Inhalt aus","kRestart":"neu starten","kLevels":"Level","kSkip":"überspringen (am Ende)","lvSub":"Aufgaben {a}–{b} · {d}/{n} geschafft","lvLock":"Zum Freischalten sind insgesamt ★ {need} nötig · du hast {tot}","toastLv":"{lv} {n} · {name} braucht insgesamt ★ {need}. Du hast ★ {tot}.","toastCh":"Schließe zuerst die vorherige Aufgabe ab, um diese freizuschalten.","hintLv":"↑ ↓ wählen · Enter öffnen · Esc schließen","hintCh":"← ↑ ↓ → wählen · Enter starten · Esc zurück","home":"⌂ Startseite","reset":"↺ Gesamten Fortschritt zurücksetzen","confirm":"Alle Aufgaben werden gesperrt und dein Fortschritt gelöscht. Bist du sicher?","yes":"Ja, zurücksetzen","no":"Abbrechen","eTitle":"Aufgabe geschafft","eTries":"Versuche","eTime":"Zeit","msg3":"Perfekt!","msg2":"Sehr gut!","msg1":"Geschafft!","newRec":"Neuer Rekord!","bestPrev":"Dein Bestwert: {s}","eNext":"Nächste Aufgabe","goLevel":"Weiter zu {lv} {n}","eAgain":"↺ Nochmal","unlocked":"{lv} {n} · {name} freigeschaltet!","needMore":"{lv} {n} braucht ★ {a}/{b}. Spiele frühere Aufgaben nochmal, um mehr Sterne zu sammeln.","tmp1":"Diese Kopie scheint verändert worden zu sein.","tmp2":"Das Originalspiel:","banner":"Originalspiel: {n}  —  {u}"},"pt":{"lv0":"Iniciante","lv1":"Intermediário","lv2":"Pro","lv3":"Especialista","level":"Nível","levels":"Níveis","chap":"Fase {n}","stagesBtn":"Fases","mvU":"cima","mvR":"direita","mvD":"baixo","mvL":"esquerda","kwRep":"repetir","kwWh":"enquanto","kwIf":"se","kwDef":"função","ph":"cor","colXs":"casa escura","colOs":"casa amarela","colPs":"casa roxa","fn":{"göz":"olho","düşme":"queda","kıvrım":"curva","adım":"passo","tara":"varrer","çık":"subir","zıpla":"pulo","dön":"virar"},"settings":"Ajustes","sound":"Som","haptic":"Vibração","theme":"Tema","themeLight":"Claro","themeDark":"Escuro","themeWarm":"Quente","language":"Idioma","fsEnter":"Tela cheia (F)","fsExit":"Sair da tela cheia (F)","restartT":"Reiniciar","rules":"Regras","close":"Fechar","tag1":"Leia o código. Execute na sua mente.","tag2":"Faça os movimentos certos.","step1":"Leia o código","step2":"Execute na mente","step3":"Mova com as setas","play":"Jogar","again":"Jogar de novo","cont":"Continuar · Fase {n}","prog":"{d} / {t} fases concluídas","foot":"100 fases · 4 níveis","splashTag":"leia · execute · mova","crLong":"Desenvolvido por {n}","crAbout":"Desenvolvedor: {n}  ·  © {y}","attempt":"Tentativa {n}","stDefault":"Execute o código na mente e faça os movimentos com as setas.","stWrong":"Movimento errado! A fase recomeça…","stRetry":"Tente de novo.","stOk":"✓ Correto!","stAll":"✓ Você terminou todas as fases! Parabéns!","stReset":"Progresso redefinido. Vamos recomeçar!","i0":"Leia o código e faça os mesmos movimentos com as setas. Se errar, a fase recomeça.","i1":"Siga os comandos de cima para baixo, em ordem.","i6":"{rep} (n) { ... } → faça o que está dentro n vezes seguidas.","i25":"Um laço pode conter outros laços. Termine primeiro o de dentro.","i30":"{wh} ✖ { ... } → enquanto a casa sob o ponto for escura, faça o que está dentro; repita até deixar de ser.","i40":"{if} ● { ... } → se a casa sob o ponto for amarela, faça o que está dentro uma vez; senão, pule.","i50":"{def} nome () { ... } → é só uma definição. Onde nome() aparecer, faça o que está dentro.","i62":"Uma função pode chamar outra função.","lgRep":"{rep} (n) { } → faça o que está dentro n vezes","lgWh":"{wh} [{ph}] { } → repita o que está dentro enquanto a casa sob o ponto tiver essa cor","lgIf":"{if} [{ph}] { } → se a casa sob o ponto tiver essa cor, faça o que está dentro uma vez","lgFn":"{def} nome () { } → onde nome() aparecer, faça o que está dentro","kRestart":"reiniciar","kLevels":"níveis","kSkip":"pular (ao terminar)","lvSub":"Fases {a}–{b} · {d}/{n} concluídas","lvLock":"Precisa de ★ {need} no total para abrir · você tem {tot}","toastLv":"{lv} {n} · {name} exige ★ {need} no total. Você tem ★ {tot}.","toastCh":"Conclua a fase anterior para abrir esta.","hintLv":"↑ ↓ escolher · Enter abrir · Esc fechar","hintCh":"← ↑ ↓ → escolher · Enter iniciar · Esc voltar","home":"⌂ Início","reset":"↺ Redefinir todo o progresso","confirm":"Todas as fases serão bloqueadas e seu progresso apagado. Tem certeza?","yes":"Sim, redefinir","no":"Cancelar","eTitle":"Fase concluída","eTries":"Tentativas","eTime":"Tempo","msg3":"Perfeito!","msg2":"Muito bem!","msg1":"Concluído!","newRec":"Novo recorde!","bestPrev":"Seu melhor: {s}","eNext":"Próxima fase","goLevel":"Ir para o {lv} {n}","eAgain":"↺ Jogar de novo","unlocked":"{lv} {n} · {name} desbloqueado!","needMore":"{lv} {n} exige ★ {a}/{b}. Repita fases anteriores para ganhar mais estrelas.","tmp1":"Esta cópia parece ter sido modificada.","tmp2":"Para o jogo original:","banner":"Jogo original: {n}  —  {u}"},"ru":{"lv0":"Начальный","lv1":"Средний","lv2":"Профи","lv3":"Эксперт","level":"Уровень","levels":"Уровни","chap":"Этап {n}","stagesBtn":"Этапы","mvU":"вверх","mvR":"вправо","mvD":"вниз","mvL":"влево","kwRep":"повтори","kwWh":"пока","kwIf":"если","kwDef":"функция","ph":"цвет","colXs":"тёмная клетка","colOs":"жёлтая клетка","colPs":"фиолетовая клетка","fn":{"göz":"глаз","düşme":"падение","kıvrım":"изгиб","adım":"шаг","tara":"скан","çık":"подъём","zıpla":"прыжок","dön":"поворот"},"settings":"Настройки","sound":"Звук","haptic":"Вибрация","theme":"Тема","themeLight":"Светлая","themeDark":"Тёмная","themeWarm":"Тёплая","language":"Язык","fsEnter":"Полный экран (F)","fsExit":"Выйти из полноэкранного режима (F)","restartT":"Заново","rules":"Правила","close":"Закрыть","tag1":"Прочитай код. Выполни его в уме.","tag2":"Сделай верные ходы.","step1":"Читай код","step2":"Выполни в уме","step3":"Двигайся стрелками","play":"Играть","again":"Играть снова","cont":"Продолжить · Этап {n}","prog":"{d} / {t} этапов пройдено","foot":"100 этапов · 4 уровня","splashTag":"читай · выполняй · ходи","crLong":"Разработчик: {n}","crAbout":"Разработчик: {n}  ·  © {y}","attempt":"Попытка {n}","stDefault":"Выполни код в уме и сделай ходы стрелками.","stWrong":"Неверный ход! Этап начинается заново…","stRetry":"Попробуй ещё раз.","stOk":"✓ Верно!","stAll":"✓ Ты прошёл все этапы! Поздравляем!","stReset":"Прогресс сброшен. Начинаем заново!","i0":"Прочитай код и сделай те же ходы стрелками. При ошибке этап начнётся заново.","i1":"Выполняй команды сверху вниз по порядку.","i6":"{rep} (n) { ... } → выполни содержимое n раз подряд.","i25":"Внутри цикла могут быть другие циклы. Сначала закончи внутренний.","i30":"{wh} ✖ { ... } → пока клетка под точкой тёмная, выполняй содержимое; повторяй, пока она не перестанет быть тёмной.","i40":"{if} ● { ... } → если клетка под точкой жёлтая, выполни содержимое один раз; иначе пропусти.","i50":"{def} имя () { ... } → это лишь описание. Где встречается имя(), выполни его содержимое.","i62":"Одна функция может вызывать другую.","lgRep":"{rep} (n) { } → выполни содержимое n раз","lgWh":"{wh} [{ph}] { } → повторяй содержимое, пока клетка под точкой этого цвета","lgIf":"{if} [{ph}] { } → если клетка под точкой этого цвета, выполни содержимое один раз","lgFn":"{def} имя () { } → где встречается имя(), выполни содержимое","kRestart":"заново","kLevels":"уровни","kSkip":"пропустить (в конце)","lvSub":"Этапы {a}–{b} · {d}/{n} пройдено","lvLock":"Для открытия нужно ★ {need} всего · у тебя {tot}","toastLv":"{lv} {n} · {name}: нужно всего ★ {need}. У тебя ★ {tot}.","toastCh":"Пройди предыдущий этап, чтобы открыть этот.","hintLv":"↑ ↓ выбрать · Enter открыть · Esc закрыть","hintCh":"← ↑ ↓ → выбрать · Enter начать · Esc назад","home":"⌂ Главная","reset":"↺ Сбросить весь прогресс","confirm":"Все этапы будут закрыты, а прогресс удалён. Ты уверен?","yes":"Да, сбросить","no":"Отмена","eTitle":"Этап пройден","eTries":"Попытки","eTime":"Время","msg3":"Отлично!","msg2":"Очень хорошо!","msg1":"Готово!","newRec":"Новый рекорд!","bestPrev":"Твой лучший результат: {s}","eNext":"Следующий этап","goLevel":"Перейти на {lv} {n}","eAgain":"↺ Ещё раз","unlocked":"Открыт {lv} {n} · {name}!","needMore":"Для {lv} {n} нужно ★ {a}/{b}. Пройди прежние этапы снова, чтобы получить больше звёзд.","tmp1":"Похоже, эта копия была изменена.","tmp2":"Оригинальная игра:","banner":"Оригинал игры: {n}  —  {u}"},"zh":{"lv0":"入门","lv1":"中级","lv2":"专业","lv3":"专家","level":"等级","levels":"等级","chap":"第{n}关","stagesBtn":"关卡","mvU":"上","mvR":"右","mvD":"下","mvL":"左","kwRep":"重复","kwWh":"当","kwIf":"如果","kwDef":"函数","ph":"颜色","colXs":"深色格","colOs":"黄色格","colPs":"紫色格","fn":{"göz":"眼","düşme":"掉落","kıvrım":"弯","adım":"步","tara":"扫描","çık":"攀爬","zıpla":"跳","dön":"转"},"settings":"设置","sound":"声音","haptic":"振动","theme":"主题","themeLight":"浅色","themeDark":"深色","themeWarm":"暖色","language":"语言","fsEnter":"全屏 (F)","fsExit":"退出全屏 (F)","restartT":"重新开始","rules":"规则","close":"关闭","tag1":"读代码，在脑中运行。","tag2":"走对每一步。","step1":"读代码","step2":"在脑中运行","step3":"用方向键移动","play":"开始","again":"再玩一次","cont":"继续 · 第{n}关","prog":"已完成 {d} / {t} 关","foot":"100 关 · 4 个等级","splashTag":"读 · 运行 · 行动","crLong":"开发者：{n}","crAbout":"开发者：{n}  ·  © {y}","attempt":"第{n}次尝试","stDefault":"在脑中运行代码，再用方向键走出每一步。","stWrong":"走错了！本关重新开始…","stRetry":"再试一次。","stOk":"✓ 正确！","stAll":"✓ 你通关了所有关卡！恭喜！","stReset":"进度已重置，重新开始！","i0":"读代码，用方向键走出相同的步骤。走错一步，本关重新开始。","i1":"从上到下按顺序执行命令。","i6":"{rep} (n) { ... } → 把里面的内容连续做 n 次。","i25":"循环里可以套着别的循环。先完成里面的那个。","i30":"{wh} ✖ { ... } → 只要点下面的格子是深色，就执行里面的内容；重复到它不再是深色为止。","i40":"{if} ● { ... } → 如果点下面的格子是黄色，就执行一次里面的内容；否则跳过。","i50":"{def} 名称 () { ... } → 这只是定义。哪里写了 名称()，就在那里执行里面的内容。","i62":"一个函数可以调用另一个函数。","lgRep":"{rep} (n) { } → 执行里面的内容 n 次","lgWh":"{wh} [{ph}] { } → 只要点下面的格子是该颜色，就重复执行里面的内容","lgIf":"{if} [{ph}] { } → 如果点下面的格子是该颜色，就执行一次里面的内容","lgFn":"{def} 名称 () { } → 写了 名称() 的地方就执行里面的内容","kRestart":"重来","kLevels":"等级","kSkip":"跳过（完成后）","lvSub":"第 {a}–{b} 关 · 已完成 {d}/{n}","lvLock":"累计需要 ★ {need} 才能解锁 · 目前 {tot}","toastLv":"{lv} {n} · {name} 需要累计 ★ {need}。你现在有 ★ {tot}。","toastCh":"先完成上一关才能解锁这一关。","hintLv":"↑ ↓ 选择 · Enter 打开 · Esc 关闭","hintCh":"← ↑ ↓ → 选择 · Enter 开始 · Esc 返回","home":"⌂ 主页","reset":"↺ 重置全部进度","confirm":"所有关卡将被锁定，进度会被清除。确定吗？","yes":"是，重置","no":"取消","eTitle":"关卡完成","eTries":"尝试","eTime":"用时","msg3":"完美！","msg2":"很棒！","msg1":"完成！","newRec":"新纪录！","bestPrev":"你的最佳成绩：{s}","eNext":"下一关","goLevel":"前往{lv} {n}","eAgain":"↺ 再玩一次","unlocked":"已解锁 {lv} {n} · {name}！","needMore":"{lv} {n} 需要 ★ {a}/{b}。重玩之前的关卡来获得更多星星。","tmp1":"此副本似乎已被修改。","tmp2":"官方原版游戏：","banner":"原版游戏：{n}  —  {u}"},"ja":{"lv0":"初級","lv1":"中級","lv2":"プロ","lv3":"エキスパート","level":"レベル","levels":"レベル","chap":"ステージ{n}","stagesBtn":"ステージ","mvU":"うえ","mvR":"みぎ","mvD":"した","mvL":"ひだり","kwRep":"くりかえし","kwWh":"あいだ","kwIf":"もし","kwDef":"かんすう","ph":"色","colXs":"暗いマス","colOs":"黄色いマス","colPs":"紫のマス","fn":{"göz":"め","düşme":"おちる","kıvrım":"カーブ","adım":"ステップ","tara":"スキャン","çık":"のぼる","zıpla":"ジャンプ","dön":"まわる"},"settings":"設定","sound":"サウンド","haptic":"振動","theme":"テーマ","themeLight":"ライト","themeDark":"ダーク","themeWarm":"ウォーム","language":"言語","fsEnter":"全画面 (F)","fsExit":"全画面を終了 (F)","restartT":"やり直す","rules":"ルール","close":"閉じる","tag1":"コードを読む。頭の中で実行する。","tag2":"正しい手を打とう。","step1":"コードを読む","step2":"頭の中で実行","step3":"矢印キーで動く","play":"プレイ","again":"もう一度","cont":"つづける · ステージ{n}","prog":"{d} / {t} ステージクリア","foot":"100ステージ · 4レベル","splashTag":"読む · 実行 · 動く","crLong":"開発：{n}","crAbout":"開発者：{n}  ·  © {y}","attempt":"{n}回目","stDefault":"コードを頭の中で実行して、矢印キーで動かそう。","stWrong":"まちがい！ステージをやり直します…","stRetry":"もう一度挑戦！","stOk":"✓ 正解！","stAll":"✓ 全ステージクリア！おめでとう！","stReset":"進行状況をリセットしました。最初から始めます！","i0":"コードを読んで、同じ動きを矢印キーで行おう。まちがえるとステージが最初からになります。","i1":"コマンドを上から下へ順番に実行しよう。","i6":"{rep} (n) { ... } → 中身を n 回つづけて行う。","i25":"くりかえしの中に別のくりかえしがあることも。内側から先に終わらせよう。","i30":"{wh} ✖ { ... } → 点の下のマスが暗いあいだ、中身を行う。暗くなくなるまでくりかえす。","i40":"{if} ● { ... } → 点の下のマスが黄色なら、中身を1回行う。そうでなければ飛ばす。","i50":"{def} 名前 () { ... } → 定義だけ。名前() と書かれた場所で中身を行う。","i62":"かんすうは別のかんすうを呼び出せます。","lgRep":"{rep} (n) { } → 中身を n 回行う","lgWh":"{wh} [{ph}] { } → 点の下のマスがその色のあいだ、中身をくりかえす","lgIf":"{if} [{ph}] { } → 点の下のマスがその色なら、中身を1回行う","lgFn":"{def} 名前 () { } → 名前() の場所で中身を行う","kRestart":"やり直す","kLevels":"レベル","kSkip":"スキップ（クリア後）","lvSub":"ステージ {a}–{b} · {d}/{n} クリア","lvLock":"解放には合計 ★ {need} が必要 · 現在 {tot}","toastLv":"{lv} {n} · {name} には合計 ★ {need} が必要です。現在 ★ {tot}。","toastCh":"前のステージをクリアするとここが開きます。","hintLv":"↑ ↓ 選択 · Enter 開く · Esc 閉じる","hintCh":"← ↑ ↓ → 選択 · Enter 開始 · Esc 戻る","home":"⌂ ホーム","reset":"↺ すべての進行状況をリセット","confirm":"すべてのステージがロックされ、進行状況が削除されます。よろしいですか？","yes":"はい、リセット","no":"キャンセル","eTitle":"ステージクリア","eTries":"試行","eTime":"タイム","msg3":"パーフェクト！","msg2":"すごい！","msg1":"クリア！","newRec":"新記録！","bestPrev":"ベスト: {s}","eNext":"次のステージ","goLevel":"{lv} {n} へ","eAgain":"↺ もう一度","unlocked":"{lv} {n} · {name} が解放されました！","needMore":"{lv} {n} には ★ {a}/{b} が必要です。前のステージを遊び直して星を増やそう。","tmp1":"このコピーは改変されているようです。","tmp2":"オリジナルのゲーム：","banner":"オリジナル：{n}  —  {u}"},"ko":{"lv0":"초급","lv1":"중급","lv2":"프로","lv3":"전문가","level":"레벨","levels":"레벨","chap":"스테이지 {n}","stagesBtn":"스테이지","mvU":"위","mvR":"오른쪽","mvD":"아래","mvL":"왼쪽","kwRep":"반복","kwWh":"동안","kwIf":"만약","kwDef":"함수","ph":"색","colXs":"어두운 칸","colOs":"노란 칸","colPs":"보라 칸","fn":{"göz":"눈","düşme":"낙하","kıvrım":"커브","adım":"걸음","tara":"스캔","çık":"오르기","zıpla":"점프","dön":"돌기"},"settings":"설정","sound":"사운드","haptic":"진동","theme":"테마","themeLight":"라이트","themeDark":"다크","themeWarm":"웜","language":"언어","fsEnter":"전체 화면 (F)","fsExit":"전체 화면 종료 (F)","restartT":"다시 시작","rules":"규칙","close":"닫기","tag1":"코드를 읽고, 머릿속으로 실행하세요.","tag2":"정확한 움직임을 하세요.","step1":"코드 읽기","step2":"머릿속으로 실행","step3":"방향키로 이동","play":"플레이","again":"다시 하기","cont":"계속 · 스테이지 {n}","prog":"{d} / {t} 스테이지 완료","foot":"100 스테이지 · 4 레벨","splashTag":"읽기 · 실행 · 이동","crLong":"개발: {n}","crAbout":"개발자: {n}  ·  © {y}","attempt":"{n}번째 시도","stDefault":"코드를 머릿속으로 실행하고 방향키로 움직이세요.","stWrong":"잘못된 움직임! 스테이지가 처음부터 다시 시작됩니다…","stRetry":"다시 시도하세요.","stOk":"✓ 정답!","stAll":"✓ 모든 스테이지를 완료했어요! 축하해요!","stReset":"진행 상황이 초기화되었어요. 처음부터 시작해요!","i0":"코드를 읽고 방향키로 똑같이 움직이세요. 틀리면 스테이지가 처음부터 다시 시작됩니다.","i1":"명령을 위에서 아래로 차례대로 따르세요.","i6":"{rep} (n) { ... } → 안의 내용을 n번 연달아 실행.","i25":"반복 안에 또 다른 반복이 있을 수 있어요. 안쪽부터 먼저 끝내세요.","i30":"{wh} ✖ { ... } → 점 아래 칸이 어두운 동안 안의 내용을 실행하고, 어둡지 않을 때까지 반복해요.","i40":"{if} ● { ... } → 점 아래 칸이 노란색이면 안의 내용을 한 번 실행하고, 아니면 건너뛰어요.","i50":"{def} 이름 () { ... } → 정의일 뿐이에요. 이름()이 나오는 곳에서 안의 내용을 실행해요.","i62":"함수는 다른 함수를 호출할 수 있어요.","lgRep":"{rep} (n) { } → 안의 내용을 n번 실행","lgWh":"{wh} [{ph}] { } → 점 아래 칸이 그 색인 동안 안의 내용을 반복","lgIf":"{if} [{ph}] { } → 점 아래 칸이 그 색이면 안의 내용을 한 번 실행","lgFn":"{def} 이름 () { } → 이름()이 나오는 곳에서 안의 내용을 실행","kRestart":"다시","kLevels":"레벨","kSkip":"건너뛰기(완료 후)","lvSub":"스테이지 {a}–{b} · {d}/{n} 완료","lvLock":"열려면 총 ★ {need} 필요 · 현재 {tot}","toastLv":"{lv} {n} · {name}은(는) 총 ★ {need}가 필요해요. 현재 ★ {tot}.","toastCh":"이 스테이지를 열려면 이전 스테이지를 먼저 완료하세요.","hintLv":"↑ ↓ 선택 · Enter 열기 · Esc 닫기","hintCh":"← ↑ ↓ → 선택 · Enter 시작 · Esc 뒤로","home":"⌂ 홈","reset":"↺ 모든 진행 상황 초기화","confirm":"모든 스테이지가 잠기고 진행 상황이 삭제돼요. 정말 진행할까요?","yes":"네, 초기화","no":"취소","eTitle":"스테이지 완료","eTries":"시도","eTime":"시간","msg3":"완벽해요!","msg2":"아주 좋아요!","msg1":"완료!","newRec":"신기록!","bestPrev":"최고 기록: {s}","eNext":"다음 스테이지","goLevel":"{lv} {n}(으)로 이동","eAgain":"↺ 다시 하기","unlocked":"{lv} {n} · {name} 잠금 해제!","needMore":"{lv} {n}에는 ★ {a}/{b}가 필요해요. 이전 스테이지를 다시 플레이해 별을 더 모으세요.","tmp1":"이 사본은 수정된 것 같습니다.","tmp2":"원본 게임:","banner":"원본 게임: {n}  —  {u}"},"ar":{"lv0":"مبتدئ","lv1":"متوسط","lv2":"محترف","lv3":"خبير","level":"المستوى","levels":"المستويات","chap":"المرحلة {n}","stagesBtn":"المراحل","mvU":"أعلى","mvR":"يمين","mvD":"أسفل","mvL":"يسار","kwRep":"كرر","kwWh":"طالما","kwIf":"إذا","kwDef":"دالة","ph":"اللون","colXs":"خانة داكنة","colOs":"خانة صفراء","colPs":"خانة بنفسجية","fn":{"göz":"عين","düşme":"سقوط","kıvrım":"منعطف","adım":"خطوة","tara":"مسح","çık":"تسلق","zıpla":"قفزة","dön":"دوران"},"settings":"الإعدادات","sound":"الصوت","haptic":"الاهتزاز","theme":"السمة","themeLight":"فاتح","themeDark":"داكن","themeWarm":"دافئ","language":"اللغة","fsEnter":"ملء الشاشة (F)","fsExit":"إنهاء ملء الشاشة (F)","restartT":"إعادة","rules":"القواعد","close":"إغلاق","tag1":"اقرأ الكود. نفّذه في ذهنك.","tag2":"قم بالحركات الصحيحة.","step1":"اقرأ الكود","step2":"نفّذه في ذهنك","step3":"تحرّك بمفاتيح الأسهم","play":"العب","again":"العب مجددًا","cont":"متابعة · المرحلة {n}","prog":"تم إكمال {d} / {t} مرحلة","foot":"100 مرحلة · 4 مستويات","splashTag":"اقرأ · نفّذ · تحرّك","crLong":"تطوير {n}","crAbout":"المطوّر: {n}  ·  © {y}","attempt":"المحاولة {n}","stDefault":"نفّذ الكود في ذهنك ثم تحرّك بمفاتيح الأسهم.","stWrong":"حركة خاطئة! ستبدأ المرحلة من جديد…","stRetry":"حاول مرة أخرى.","stOk":"✓ صحيح!","stAll":"✓ أنهيت جميع المراحل! تهانينا!","stReset":"تمت إعادة ضبط التقدّم. لنبدأ من جديد!","i0":"اقرأ الكود وقم بنفس الحركات بمفاتيح الأسهم. أي خطأ يعيد المرحلة من البداية.","i1":"نفّذ الأوامر من الأعلى إلى الأسفل بالترتيب.","i6":"{rep} (n) { ... } ← نفّذ ما بالداخل n مرة متتالية.","i25":"قد تحتوي الحلقات على حلقات أخرى. أنهِ الداخلية أولًا.","i30":"{wh} ✖ { ... } ← طالما الخانة تحت النقطة داكنة نفّذ ما بالداخل، وكرّر حتى تصبح غير داكنة.","i40":"{if} ● { ... } ← إذا كانت الخانة تحت النقطة صفراء نفّذ ما بالداخل مرة واحدة، وإلا تجاوزه.","i50":"{def} اسم () { ... } ← مجرّد تعريف. أينما ظهر اسم() نفّذ ما بداخله.","i62":"يمكن لدالة أن تستدعي دالة أخرى.","lgRep":"{rep} (n) { } ← نفّذ ما بالداخل n مرة","lgWh":"{wh} [{ph}] { } ← كرّر ما بالداخل طالما الخانة تحت النقطة بذلك اللون","lgIf":"{if} [{ph}] { } ← إذا كانت الخانة تحت النقطة بذلك اللون نفّذ ما بالداخل مرة واحدة","lgFn":"{def} اسم () { } ← أينما ظهر اسم() نفّذ ما بداخله","kRestart":"إعادة","kLevels":"المستويات","kSkip":"تخطّي (عند الانتهاء)","lvSub":"المراحل {a}–{b} · {d}/{n} مكتملة","lvLock":"تحتاج إلى ★ {need} إجمالًا للفتح · لديك {tot}","toastLv":"{lv} {n} · {name} يتطلّب ★ {need} إجمالًا. لديك ★ {tot}.","toastCh":"أكمل المرحلة السابقة لفتح هذه المرحلة.","hintLv":"↑ ↓ اختيار · Enter فتح · Esc إغلاق","hintCh":"← ↑ ↓ → اختيار · Enter بدء · Esc رجوع","home":"⌂ الرئيسية","reset":"↺ إعادة ضبط كل التقدّم","confirm":"سيتم قفل جميع المراحل وحذف تقدّمك. هل أنت متأكد؟","yes":"نعم، أعد الضبط","no":"إلغاء","eTitle":"اكتملت المرحلة","eTries":"المحاولات","eTime":"الوقت","msg3":"ممتاز!","msg2":"جيد جدًا!","msg1":"تم!","newRec":"رقم قياسي جديد!","bestPrev":"أفضل نتيجة لك: {s}","eNext":"المرحلة التالية","goLevel":"انتقل إلى {lv} {n}","eAgain":"↺ العب مجددًا","unlocked":"تم فتح {lv} {n} · {name}!","needMore":"{lv} {n} يتطلّب ★ {a}/{b}. أعد لعب المراحل السابقة لتحصل على نجوم أكثر.","tmp1":"يبدو أن هذه النسخة قد تم تعديلها.","tmp2":"اللعبة الأصلية:","banner":"اللعبة الأصلية: {n}  —  {u}"},"hi":{"lv0":"शुरुआती","lv1":"मध्यम","lv2":"प्रो","lv3":"विशेषज्ञ","level":"स्तर","levels":"स्तर","chap":"चरण {n}","stagesBtn":"चरण","mvU":"ऊपर","mvR":"दाएँ","mvD":"नीचे","mvL":"बाएँ","kwRep":"दोहराओ","kwWh":"जबतक","kwIf":"अगर","kwDef":"फ़ंक्शन","ph":"रंग","colXs":"गहरा खाना","colOs":"पीला खाना","colPs":"बैंगनी खाना","fn":{"göz":"आँख","düşme":"गिरना","kıvrım":"मोड़","adım":"कदम","tara":"स्कैन","çık":"चढ़ना","zıpla":"कूद","dön":"मुड़ना"},"settings":"सेटिंग्स","sound":"ध्वनि","haptic":"कंपन","theme":"थीम","themeLight":"हल्का","themeDark":"गहरा","themeWarm":"गर्म","language":"भाषा","fsEnter":"पूर्ण स्क्रीन (F)","fsExit":"पूर्ण स्क्रीन से बाहर (F)","restartT":"फिर से","rules":"नियम","close":"बंद करें","tag1":"कोड पढ़ो। दिमाग में चलाओ।","tag2":"सही चालें चलो।","step1":"कोड पढ़ो","step2":"दिमाग में चलाओ","step3":"तीर कुंजियों से चलो","play":"खेलें","again":"फिर खेलें","cont":"जारी रखें · चरण {n}","prog":"{d} / {t} चरण पूरे","foot":"100 चरण · 4 स्तर","splashTag":"पढ़ो · चलाओ · चलो","crLong":"डेवलपर: {n}","crAbout":"डेवलपर: {n}  ·  © {y}","attempt":"प्रयास {n}","stDefault":"कोड को दिमाग में चलाओ, फिर तीर कुंजियों से चलो।","stWrong":"गलत चाल! चरण फिर से शुरू हो रहा है…","stRetry":"फिर कोशिश करो।","stOk":"✓ सही!","stAll":"✓ तुमने सभी चरण पूरे कर लिए! बधाई हो!","stReset":"प्रगति रीसेट हो गई। फिर से शुरू करते हैं!","i0":"कोड पढ़ो और तीर कुंजियों से वही चालें चलो। गलती पर चरण फिर से शुरू होगा।","i1":"आदेशों को ऊपर से नीचे क्रम से चलाओ।","i6":"{rep} (n) { ... } → अंदर का काम n बार लगातार करो।","i25":"लूप के अंदर दूसरे लूप हो सकते हैं। पहले अंदर वाला पूरा करो।","i30":"{wh} ✖ { ... } → जब तक बिंदु के नीचे का खाना गहरा है, अंदर का काम करो; गहरा न रहने तक दोहराओ।","i40":"{if} ● { ... } → अगर बिंदु के नीचे का खाना पीला है तो अंदर का काम एक बार करो, नहीं तो छोड़ दो।","i50":"{def} नाम () { ... } → यह सिर्फ परिभाषा है। जहाँ नाम() लिखा हो, वहाँ अंदर का काम करो।","i62":"एक फ़ंक्शन दूसरे फ़ंक्शन को बुला सकता है।","lgRep":"{rep} (n) { } → अंदर का काम n बार करो","lgWh":"{wh} [{ph}] { } → जब तक बिंदु के नीचे का खाना उस रंग का है, अंदर का काम दोहराओ","lgIf":"{if} [{ph}] { } → अगर बिंदु के नीचे का खाना उस रंग का है तो अंदर का काम एक बार करो","lgFn":"{def} नाम () { } → जहाँ नाम() लिखा हो वहाँ अंदर का काम करो","kRestart":"फिर से","kLevels":"स्तर","kSkip":"छोड़ें (पूरा होने पर)","lvSub":"चरण {a}–{b} · {d}/{n} पूरे","lvLock":"खोलने के लिए कुल ★ {need} चाहिए · अभी {tot}","toastLv":"{lv} {n} · {name} के लिए कुल ★ {need} चाहिए। अभी ★ {tot} हैं।","toastCh":"इस चरण को खोलने के लिए पहले पिछला चरण पूरा करो।","hintLv":"↑ ↓ चुनें · Enter खोलें · Esc बंद","hintCh":"← ↑ ↓ → चुनें · Enter शुरू · Esc वापस","home":"⌂ होम","reset":"↺ सारी प्रगति रीसेट करें","confirm":"सभी चरण बंद हो जाएंगे और प्रगति मिट जाएगी। क्या तुम्हें पक्का यकीन है?","yes":"हाँ, रीसेट करें","no":"रद्द करें","eTitle":"चरण पूरा हुआ","eTries":"प्रयास","eTime":"समय","msg3":"बेहतरीन!","msg2":"बहुत बढ़िया!","msg1":"पूरा!","newRec":"नया रिकॉर्ड!","bestPrev":"तुम्हारा सर्वश्रेष्ठ: {s}","eNext":"अगला चरण","goLevel":"{lv} {n} पर जाएँ","eAgain":"↺ फिर खेलें","unlocked":"{lv} {n} · {name} अनलॉक हुआ!","needMore":"{lv} {n} के लिए ★ {a}/{b} चाहिए। और सितारे पाने के लिए पिछले चरण फिर खेलो।","tmp1":"ऐसा लगता है कि यह प्रति बदली गई है।","tmp2":"मूल गेम के लिए:","banner":"मूल गेम: {n}  —  {u}"},"id":{"lv0":"Pemula","lv1":"Menengah","lv2":"Mahir","lv3":"Ahli","level":"Level","levels":"Level","chap":"Tahap {n}","stagesBtn":"Tahap","mvU":"atas","mvR":"kanan","mvD":"bawah","mvL":"kiri","kwRep":"ulangi","kwWh":"selama","kwIf":"jika","kwDef":"fungsi","ph":"warna","colXs":"kotak gelap","colOs":"kotak kuning","colPs":"kotak ungu","fn":{"göz":"mata","düşme":"jatuh","kıvrım":"kelok","adım":"langkah","tara":"pindai","çık":"panjat","zıpla":"lompat","dön":"putar"},"settings":"Pengaturan","sound":"Suara","haptic":"Getaran","theme":"Tema","themeLight":"Terang","themeDark":"Gelap","themeWarm":"Hangat","language":"Bahasa","fsEnter":"Layar penuh (F)","fsExit":"Keluar layar penuh (F)","restartT":"Ulangi","rules":"Aturan","close":"Tutup","tag1":"Baca kodenya. Jalankan di kepalamu.","tag2":"Lakukan gerakan yang tepat.","step1":"Baca kodenya","step2":"Jalankan di kepala","step3":"Gerak dengan tombol panah","play":"Main","again":"Main lagi","cont":"Lanjut · Tahap {n}","prog":"{d} / {t} tahap selesai","foot":"100 tahap · 4 level","splashTag":"baca · jalankan · gerak","crLong":"Dikembangkan oleh {n}","crAbout":"Pengembang: {n}  ·  © {y}","attempt":"Percobaan {n}","stDefault":"Jalankan kode di kepalamu, lalu gerak dengan tombol panah.","stWrong":"Gerakan salah! Tahap dimulai ulang…","stRetry":"Coba lagi.","stOk":"✓ Benar!","stAll":"✓ Semua tahap selesai! Selamat!","stReset":"Progres direset. Mulai dari awal!","i0":"Baca kodenya dan lakukan gerakan yang sama dengan tombol panah. Jika salah, tahap dimulai ulang.","i1":"Ikuti perintah dari atas ke bawah secara berurutan.","i6":"{rep} (n) { ... } → lakukan isinya sebanyak n kali berturut-turut.","i25":"Perulangan bisa berisi perulangan lain. Selesaikan yang di dalam dulu.","i30":"{wh} ✖ { ... } → selama kotak di bawah titik gelap, lakukan isinya; ulangi sampai tidak gelap lagi.","i40":"{if} ● { ... } → jika kotak di bawah titik kuning, lakukan isinya satu kali; jika tidak, lewati.","i50":"{def} nama () { ... } → hanya definisi. Di mana pun nama() muncul, lakukan isinya.","i62":"Sebuah fungsi dapat memanggil fungsi lain.","lgRep":"{rep} (n) { } → lakukan isinya n kali","lgWh":"{wh} [{ph}] { } → ulangi isinya selama kotak di bawah titik berwarna itu","lgIf":"{if} [{ph}] { } → jika kotak di bawah titik berwarna itu, lakukan isinya satu kali","lgFn":"{def} nama () { } → di mana pun nama() muncul, lakukan isinya","kRestart":"ulang","kLevels":"level","kSkip":"lewati (jika selesai)","lvSub":"Tahap {a}–{b} · {d}/{n} selesai","lvLock":"Butuh total ★ {need} untuk membuka · kamu punya {tot}","toastLv":"{lv} {n} · {name} butuh total ★ {need}. Kamu punya ★ {tot}.","toastCh":"Selesaikan tahap sebelumnya untuk membuka tahap ini.","hintLv":"↑ ↓ pilih · Enter buka · Esc tutup","hintCh":"← ↑ ↓ → pilih · Enter mulai · Esc kembali","home":"⌂ Beranda","reset":"↺ Reset semua progres","confirm":"Semua tahap akan dikunci dan progresmu dihapus. Yakin?","yes":"Ya, reset","no":"Batal","eTitle":"Tahap selesai","eTries":"Percobaan","eTime":"Waktu","msg3":"Sempurna!","msg2":"Bagus sekali!","msg1":"Selesai!","newRec":"Rekor baru!","bestPrev":"Terbaikmu: {s}","eNext":"Tahap berikutnya","goLevel":"Ke {lv} {n}","eAgain":"↺ Main lagi","unlocked":"{lv} {n} · {name} terbuka!","needMore":"{lv} {n} butuh ★ {a}/{b}. Mainkan lagi tahap sebelumnya untuk mendapat lebih banyak bintang.","tmp1":"Salinan ini tampaknya telah dimodifikasi.","tmp2":"Untuk game aslinya:","banner":"Game asli: {n}  —  {u}"}};
+const LANG_LIST=[["tr", "Türkçe"], ["en", "English"], ["es", "Español"], ["fr", "Français"], ["de", "Deutsch"], ["pt", "Português (Brasil)"], ["ru", "Русский"], ["zh", "简体中文"], ["ja", "日本語"], ["ko", "한국어"], ["ar", "العربية"], ["hi", "हिन्दी"], ["id", "Bahasa Indonesia"]].map(([id,name])=>({id,name}));
+const LANG_IDS=LANG_LIST.map(l=>l.id);
+function detectLang(){
+  try{const sv=localStorage.getItem('kn_lang');if(sv&&LANG_IDS.includes(sv))return sv}catch(e){}
+  const n=((navigator.languages&&navigator.languages[0])||navigator.language||'en').toLowerCase().split('-')[0];
+  return LANG_IDS.includes(n)?n:'en';
+}
+let lang=detectLang();
+const tx=(k,p)=>{const d=I18N[lang];let v=(d&&d[k]!==undefined)?d[k]:(I18N.en[k]!==undefined?I18N.en[k]:I18N.tr[k]);
+  return p?String(v).replace(/\{(\w+)\}/g,(m,x)=>p[x]!==undefined?p[x]:m):v};
+const lvName=k=>tx('lv'+k);
+const kwMove=k=>tx({ArrowUp:'mvU',ArrowRight:'mvR',ArrowDown:'mvD',ArrowLeft:'mvL'}[k]);
+const kwp=()=>({rep:tx('kwRep'),wh:tx('kwWh'),if:tx('kwIf'),def:tx('kwDef')});
+const fnName=n=>{const f=(I18N[lang]||{}).fn;return (f&&f[n])||I18N.en.fn[n]||n};
+const trSfx=n=>lang==='tr'?({2:"'ye",3:"'e",4:"'e"}[n]||''):'';
+// kod satırı genişliği: CJK / tam genişlikli karakterler iki kat yer kaplar
+const wlen=str=>{let w=0;for(const ch of str){const c=ch.codePointAt(0);
+  w+=(c>=0x1100&&(c<=0x115F||(c>=0x2E80&&c<=0xA4CF)||(c>=0xAC00&&c<=0xD7A3)||(c>=0xF900&&c<=0xFAFF)||(c>=0xFE30&&c<=0xFE6F)||(c>=0xFF00&&c<=0xFF60)||(c>=0xFFE0&&c<=0xFFE6)))?1.7:1}return w};
 const TOTAL=100,PER=25;                 // 100 bölüm, her 25 bölüm bir level
-const LEVELS=[{name:'Başlangıç'},{name:'Orta'},{name:'Pro'},{name:'Ekspert'}];
+const LEVELS=[{},{},{},{}];                // adlar tx('lv0..3') ile gelir
 const NEED=[0,70,140,210];             // level kilidi: gereken TOPLAM yıldız (her level için 75 üzerinden 70)
 const UNLOCK_ALL=false;                // true yapınca tüm level ve bölümler açılır (test için)
 const levelOf=i=>Math.min(LEVELS.length-1,Math.floor(i/PER));
@@ -503,21 +546,21 @@ function rng32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>
 function specFor(i){
   const s={th:'c',rep:0,nest:0,depth:0,wh:null,ifs:null,fn:0,items:[2,3],minM:3,maxM:99,w:10,h:7,intro:''};
   // ---- Level 1 · Başlangıç (1-25): komutlar ve tekrarla ----
-  if(i===0){s.fixed=['ArrowRight','ArrowRight','ArrowRight'];s.intro='Kodu oku, aynı hamleleri ok tuşlarıyla yap. Yanlış yaparsan bölüm baştan başlar.';return s}
-  if(i<=5){s.plain=3+i;s.w=8;s.h=6;s.intro=i===1?'Komutları yukarıdan aşağıya sırayla uygula.':'';return s}
-  if(i<=14){const k=i-6;Object.assign(s,{rep:1,nest:1,depth:1,items:[2,3],minM:5+k,maxM:9+2*k});if(i===6)s.intro='tekrarla (n) { ... } → içindekileri n kez art arda yap.';return s}
+  if(i===0){s.fixed=['ArrowRight','ArrowRight','ArrowRight'];s.intro='i0';return s}
+  if(i<=5){s.plain=3+i;s.w=8;s.h=6;s.intro=i===1?'i1':'';return s}
+  if(i<=14){const k=i-6;Object.assign(s,{rep:1,nest:1,depth:1,items:[2,3],minM:5+k,maxM:9+2*k});if(i===6)s.intro='i6';return s}
   if(i<=24){const k=i-15;Object.assign(s,{rep:1,nest:1,depth:1,items:[2,4],minM:10+k,maxM:16+2*k,reqRep:1});return s}
   // ---- Level 2 · Orta (26-50): iç içe döngü, iken, eğer ----
-  if(i<=29){const k=i-25;Object.assign(s,{rep:1,nest:2,depth:2,items:[2,3],minM:14+2*k,maxM:30,reqNest:1,w:9,h:8});if(i===25)s.intro='Döngülerin içinde başka döngüler olabilir. Önce içtekini bitir.';return s}
+  if(i<=29){const k=i-25;Object.assign(s,{rep:1,nest:2,depth:2,items:[2,3],minM:14+2*k,maxM:30,reqNest:1,w:9,h:8});if(i===25)s.intro='i25';return s}
   if(i<=39){const k=i-30;Object.assign(s,{th:'s',rep:1,nest:1,depth:2,wh:i<34?['x']:['x','o'],items:[2,4],minM:8+k,maxM:16+2*k,w:9,h:9,reqWh:1});
-    if(i===30)s.intro='iken ✖ { ... } → noktanın altındaki kare koyuysa içindekini yap, kare koyu olmayana kadar tekrarla.';return s}
+    if(i===30)s.intro='i30';return s}
   if(i<=49){const k=i-40;Object.assign(s,{th:'s',rep:1,nest:2,depth:2,wh:['x','o'],ifs:i<44?['x','o']:['x','o','p'],items:[2,4],minM:10+k,maxM:20+2*k,w:9,h:9,reqIf:1});
-    if(i===40)s.intro='eğer ● { ... } → noktanın altındaki kare sarıysa içindekini bir kez yap, değilse atla.';return s}
+    if(i===40)s.intro='i40';return s}
   // ---- Level 3 · Pro (51-75): işlevler ----
   if(i<=61){const k=i-50;Object.assign(s,{th:'s',rep:1,nest:2,depth:2,wh:['x','o'],ifs:['x','o','p'],fn:1,items:[2,4],minM:14+k,maxM:26+2*k,w:9,h:9,reqFn:1});
-    if(i===50)s.intro='işlev ad () { ... } → sadece tanım. ad() yazılan yerde içindekini yap.';return s}
+    if(i===50)s.intro='i50';return s}
   if(i<=74){const k=i-62;Object.assign(s,{th:'s',rep:1,nest:2,depth:2,wh:['x','o','p'],ifs:['x','o','p'],fn:2,fnNest:1,items:[2,4],minM:20+k,maxM:36+2*k,w:10,h:9,reqFn:1,reqWh:1});
-    if(i===62)s.intro='Bir işlev başka bir işlevi çağırabilir.';return s}
+    if(i===62)s.intro='i62';return s}
   // ---- Level 4 · Ekspert (76-100): hepsi bir arada ----
   const k=i-75;
   Object.assign(s,{th:'s',rep:1,nest:2,depth:3,wh:['x','o','p'],ifs:['x','o','p'],fn:2,fnNest:1,items:[3,4],minM:28+Math.floor(k*.75),maxM:58+k,w:11,h:10,reqFn:1,reqWh:1,reqIf:1});
@@ -671,7 +714,7 @@ function restart(){
   $('#board').classList.remove('won','shake');hl(null);bar();head();
 }
 function bar(){$('#bar i').style.width=(100*idx/LVL.seq.length)+'%'}
-function head(){$('#lname').innerHTML=`<span class="a">${LEVELS[levelOf(li)].name}  ·  ${li+1}/${TOTAL}</span><span class="ti">${fmt(tm.acc)}</span><span class="d">Deneme ${tries}</span>`}
+function head(){$('#lname').innerHTML=`<span class="a">${lvName(levelOf(li))}  ·  ${li+1}/${TOTAL}</span><span class="ti">${fmt(tm.acc)}</span><span class="d">${tx('attempt',{n:tries})}</span>`}
 function setStatus(t,c=''){const s=$('#status');s.textContent=t;s.className=c}
 function hl(id){
   document.querySelectorAll('.ln.cur').forEach(e=>e.classList.remove('cur'));
@@ -682,12 +725,12 @@ function hl(id){
 const chip=c=>`<span class="chip" style="background:${CD[c].bg};color:${CD[c].fg}">${CD[c].g}</span>`;
 function hdr(nd){
   switch(nd.t){
-    case 'mv':return `<span class="c">${MV[nd.k].n}()</span>`;
-    case 'call':return `<span class="c">${LVL.names[nd.f]}()</span>`;
-    case 'rep':return `<span class="k">tekrarla</span> (<span class="n">${nd.n}</span>) <span class="k">{</span>`;
-    case 'wh':return `<span class="k">iken</span> ${chip(nd.c)} <span class="k">{</span>`;
-    case 'if':return `<span class="k">eğer</span> ${chip(nd.c)} <span class="k">{</span>`;
-    case 'def':return `<span class="k">işlev</span> <span class="f">${LVL.names[nd.f]}</span> () <span class="k">{</span>`;
+    case 'mv':return `<span class="c">${kwMove(nd.k)}()</span>`;
+    case 'call':return `<span class="c">${fnName(LVL.names[nd.f])}()</span>`;
+    case 'rep':return `<span class="k">${tx('kwRep')}</span> (<span class="n">${nd.n}</span>) <span class="k">{</span>`;
+    case 'wh':return `<span class="k">${tx('kwWh')}</span> ${chip(nd.c)} <span class="k">{</span>`;
+    case 'if':return `<span class="k">${tx('kwIf')}</span> ${chip(nd.c)} <span class="k">{</span>`;
+    case 'def':return `<span class="k">${tx('kwDef')}</span> <span class="f">${fnName(LVL.names[nd.f])}</span> () <span class="k">{</span>`;
   }
 }
 let codeData=[],compact=false,lastFs=99;
@@ -700,7 +743,7 @@ function renderCode(){
   if(LVL.defs.length)out.push({sp:1});
   em(LVL.main,0);
   const tmp=document.createElement('div');
-  out.forEach(l=>{if(!l.sp){tmp.innerHTML=l.html;l.len=tmp.textContent.length}});
+  out.forEach(l=>{if(!l.sp){tmp.innerHTML=l.html;l.len=wlen(tmp.textContent)}});
   codeData=out;
   fitCode();
 }
@@ -773,13 +816,13 @@ function buildKeys(){
 function flashKey(k){const e=document.querySelector(`#keys b[data-k="${k}"]`);if(!e)return;e.classList.add('down');setTimeout(()=>e.classList.remove('down'),140)}
 function legend(){
   const f=LVL.feats,r=[];
-  if(f.rep)r.push('tekrarla (n) { } → içindekini n kez yap');
-  if(f.wh)r.push('iken [renk] { } → noktanın altındaki kare o renkteyken içindekini tekrarla');
-  if(f.if)r.push('eğer [renk] { } → altındaki kare o renkteyse içindekini bir kez yap');
-  if(f.fn)r.push('işlev ad () { } → ad() yazılan yerde içindekini yap');
-  if(f.conds.size)r.push([...f.conds].map(c=>chip(c)+' '+CD[c].name+' kare').join('&nbsp;&nbsp; '));
-  let h=r.map(t=>`<div class="rule">${t}</div>`).join('');
-  h+=`<div class="keys"><kbd>Esc</kbd>baştan<kbd>M</kbd>bölümler<kbd>Enter</kbd>atla (bitince)</div>`;
+  if(f.rep)r.push(tx('lgRep',kwp()));
+  if(f.wh)r.push(tx('lgWh',{...kwp(),ph:tx('ph')}));
+  if(f.if)r.push(tx('lgIf',{...kwp(),ph:tx('ph')}));
+  if(f.fn)r.push(tx('lgFn',kwp()));
+  if(f.conds.size)r.push([...f.conds].map(c=>chip(c)+' '+tx('col'+c.toUpperCase()+'s')).join('&nbsp;&nbsp; '));
+  let h=r.map(x=>`<div class="rule">${x}</div>`).join('');
+  h+=`<div class="keys"><kbd>Esc</kbd>${tx('kRestart')}<kbd>M</kbd>${tx('kLevels')}<kbd>Enter</kbd>${tx('kSkip')}</div>`;
   $('#legend').innerHTML=h;
 }
 
@@ -791,7 +834,7 @@ function loadLevel(i,keepTries){
   hideEnd();
   compact=false;document.body.classList.remove('compact','help');
   buildKeys();buildBoard();renderCode();legend();restart();
-  setStatus(LVL.feats.intro||'Kodu zihninde çalıştır, hamleleri ok tuşlarıyla yap.');
+  setStatus(LVL.feats.intro?tx(LVL.feats.intro,kwp()):tx('stDefault'));
   autoFit();requestAnimationFrame(autoFit);
 }
 function move(k){
@@ -808,14 +851,14 @@ function wrong(){
   lock=true;mode='fail';
   $('#dot').classList.add('bad');
   const b=$('#board');b.classList.remove('shake');b.offsetWidth;b.classList.add('shake');
-  SFX.wrong();setStatus('Yanlış hamle! Bölüm baştan başlıyor…','bad');
+  SFX.wrong();setStatus(tx('stWrong'),'bad');
   tries++;
-  setTimeout(()=>{restart();setStatus('Tekrar dene.')},750);
+  setTimeout(()=>{restart();setStatus(tx('stRetry'))},750);
 }
 function win(){
   tmTick();mode='won';head();$('#board').classList.add('won');$('#dot').classList.add('check');SFX.win();
   if(best<li+1){best=li+1;saveBest()}
-  setStatus((li===TOTAL-1?'✓ Tüm bölümleri bitirdin! Tebrikler!':'✓ Doğru!')+' · '+fmt(tm.acc),'ok');
+  setStatus((li===TOTAL-1?tx('stAll'):tx('stOk'))+' · '+fmt(tm.acc),'ok');
   nextTimer=setTimeout(showEnd,1300);
 }
 
@@ -859,25 +902,25 @@ function showEnd(){
   if(r.stars>prev){starsMap[li]=r.stars;saveStars()}
   const after=totalStars();
   const el=$('#endscreen');
-  $('#eLevel').textContent='Bölüm '+(li+1);
+  $('#eLevel').textContent=tx('chap',{n:li+1});
   $('#eTries').textContent=tries;$('#eTime').textContent=fmt(tm.acc);
   $('#eStars').innerHTML=[0,1,2].map(()=>`<div class="st">${STAR_SVG}</div>`).join('');
-  const msg=$('#eMsg');msg.className='eMsg';msg.textContent=r.stars===3?'Mükemmel!':r.stars===2?'Çok iyi!':'Tamamlandı!';
+  const msg=$('#eMsg');msg.className='eMsg';msg.textContent=r.stars===3?tx('msg3'):r.stars===2?tx('msg2'):tx('msg1');
   const b=$('#eBest');
-  if(prev&&r.stars>prev){b.className='eBest new';b.textContent='Yeni rekor!'}
-  else if(prev){b.className='eBest';b.textContent='En iyi sonucun: '+starStr(Math.max(prev,r.stars))}
+  if(prev&&r.stars>prev){b.className='eBest new';b.textContent=tx('newRec')}
+  else if(prev){b.className='eBest';b.textContent=tx('bestPrev',{s:starStr(Math.max(prev,r.stars))})}
   else{b.className='eBest';b.textContent=''}
   // level kilidi bildirimi ve ana düğme
   const k=levelOf(li),lastOfLevel=li===lvLast(k),eu=$('#eUnlock');
   const opened=[];for(let q=1;q<LEVELS.length;q++)if(NEED[q]>before&&NEED[q]<=after)opened.push(q);
-  let label='Sonraki bölüm';endAction='next';eu.className='eUnlock';eu.textContent='';
-  if(opened.length){eu.className='eUnlock up';eu.textContent=`Level ${opened[opened.length-1]+1} · ${LEVELS[opened[opened.length-1]].name} açıldı!`}
-  if(li===TOTAL-1){label='Leveller';endAction='levels'}
+  let label=tx('eNext');endAction='next';eu.className='eUnlock';eu.textContent='';
+  if(opened.length){eu.className='eUnlock up';{const q=opened[opened.length-1];eu.textContent=tx('unlocked',{lv:tx('level'),n:q+1,name:lvName(q)})}}
+  if(li===TOTAL-1){label=tx('levels');endAction='levels'}
   else if(lastOfLevel){
-    if(levelUnlocked(k+1))label=`Level ${k+2}'ye geç`;
-    else{label='Leveller';endAction='levels';if(!opened.length)eu.textContent=`Level ${k+2} için ★ ${after}/${NEED[k+1]} gerekli. Yıldızını artırmak için önceki bölümleri tekrar oyna.`}
+    if(levelUnlocked(k+1))label=tx('goLevel',{lv:tx('level'),n:k+2,sfx:trSfx(k+2)});
+    else{label=tx('levels');endAction='levels';if(!opened.length)eu.textContent=tx('needMore',{lv:tx('level'),n:k+2,a:after,b:NEED[k+1]})}
   }
-  $('#eNext').firstChild.textContent=label;
+  $('#eNext').firstElementChild.textContent=label;
   endOn=true;el.hidden=false;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');
   endTimers.forEach(clearTimeout);endTimers=[];
   const sts=[...document.querySelectorAll('#eStars .st')];
@@ -900,7 +943,7 @@ function goLevel(i,from){
   const ctr=sel=>{const r=$(sel||'#dot').getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2]};
   const R=Math.hypot(innerWidth,innerHeight)*1.1;
   let [x,y]=ctr(from);
-  lab.textContent=(i>0&&i%PER===0?`Level ${levelOf(i)+1} · ${LEVELS[levelOf(i)].name}\n`:'')+'Bölüm '+(i+1);
+  lab.textContent=(i>0&&i%PER===0?`${tx('level')} ${levelOf(i)+1} · ${lvName(levelOf(i))}\n`:'')+tx('chap',{n:i+1});
   w.style.display='flex';SFX.whoosh(true);
   const a=w.animate([{clipPath:`circle(0px at ${x}px ${y}px)`},{clipPath:`circle(${R}px at ${x}px ${y}px)`}],{duration:480,easing:'cubic-bezier(.6,0,.3,1)',fill:'forwards'});
   lab.animate([{opacity:0,transform:'scale(.9)'},{opacity:1,transform:'scale(1)'}],{duration:320,delay:240,fill:'both',easing:'ease-out'});
@@ -925,18 +968,19 @@ const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 function drawMenu(){
   const L=menuView==='levels';
   $('#lvlList').hidden=!L;$('#mgrid').hidden=L;$('#mback').hidden=L;
-  $('#mtitle').textContent=L?'Leveller':`Level ${menuLv+1} · ${LEVELS[menuLv].name}`;
-  $('#mhint').textContent=L?'↑ ↓ seç · Enter aç · Esc kapat':'← ↑ ↓ → seç · Enter başla · Esc geri';
+  $('#mtitle').textContent=L?tx('levels'):`${tx('level')} ${menuLv+1} · ${lvName(menuLv)}`;
+  $('#mback').textContent='‹ '+tx('levels');
+  $('#mhint').textContent=L?tx('hintLv'):tx('hintCh');
   if(L)drawLevels();else drawChapters();
 }
 function drawLevels(){
   const tot=totalStars();
   $('#lvlList').innerHTML=LEVELS.map((lv,k)=>{
     const open=levelUnlocked(k);
-    const sub=open?`Bölüm ${lvFirst(k)+1}–${lvLast(k)+1} · ${lvDone(k)}/${lvSize(k)} tamamlandı`:`Açmak için toplam ★ ${NEED[k]} gerekli · şu an ${tot}`;
+    const sub=open?tx('lvSub',{a:lvFirst(k)+1,b:lvLast(k)+1,d:lvDone(k),n:lvSize(k)}):tx('lvLock',{need:NEED[k],tot});
     const pct=open?100*lvDone(k)/lvSize(k):100*Math.min(1,tot/NEED[k]);
     const right=open?`<div class="lstars">★ ${lvStars(k)}<small>/ ${lvSize(k)*3}</small></div>`:`<div class="lstars">★ ${tot}<small>/ ${NEED[k]}</small></div>`;
-    return `<div class="lcard lv${k} ${open?'':'lock'} ${k===msel?'sel':''}" data-k="${k}"><div class="lbadge">${open?k+1:LOCK_SVG}</div><div class="lbody"><div class="lname">${lv.name}</div><div class="lsub">${sub}</div><div class="lbar"><i style="width:${pct}%"></i></div></div>${right}</div>`;
+    return `<div class="lcard lv${k} ${open?'':'lock'} ${k===msel?'sel':''}" data-k="${k}"><div class="lbadge">${open?k+1:LOCK_SVG}</div><div class="lbody"><div class="lname">${lvName(k)}</div><div class="lsub">${sub}</div><div class="lbar"><i style="width:${pct}%"></i></div></div>${right}</div>`;
   }).join('');
   document.querySelectorAll('.lcard').forEach(e=>e.onclick=()=>pickLevel(+e.dataset.k));
 }
@@ -944,7 +988,7 @@ function pickLevel(k){
   if(!levelUnlocked(k)){
     const c=document.querySelector(`.lcard[data-k="${k}"]`);if(c){c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
     SFX.wrong();
-    toast(`Level ${k+1} · ${LEVELS[k].name} için toplam ★ ${NEED[k]} gerekli. Şu an ★ ${totalStars()} var.`);
+    toast(tx('toastLv',{lv:tx('level'),n:k+1,name:lvName(k),need:NEED[k],tot:totalStars()}));
     return;
   }
   menuView='chapters';menuLv=k;msel=Math.max(lvFirst(k),Math.min(resumeIdx(),lvLast(k)));drawMenu();
@@ -959,7 +1003,7 @@ function drawChapters(){
 }
 function pickChapter(i){
   if(chapterOpen(i)){closeMenu();hideWelcome();goLevel(i)}
-  else toast('Bu bölümü açmak için önce bir önceki bölümü tamamla.');
+  else toast(tx('toastCh'));
 }
 function menuBack(){menuView='levels';msel=menuLv;drawMenu()}
 $('#mback').onclick=menuBack;
@@ -967,7 +1011,7 @@ let confirming=false;
 function askReset(on){confirming=on;$('#mconf').hidden=!on;$('#mreset').hidden=on}
 function doReset(){
   best=0;saveBest();starsMap={};saveStars();
-  askReset(false);closeMenu();tries=1;loadLevel(0);setStatus('İlerleme sıfırlandı. Baştan başlıyoruz!','ok');
+  askReset(false);closeMenu();tries=1;loadLevel(0);setStatus(tx('stReset'),'ok');
 }
 $('#mreset').onclick=()=>askReset(true);$('#mno').onclick=()=>askReset(false);$('#myes').onclick=doReset;
 $('#logo').onclick=openMenu;
@@ -980,6 +1024,7 @@ $('#helpBackdrop').onclick=closeHelp;$('#helpClose').onclick=closeHelp;
 addEventListener('keydown',e=>{
   if(e.metaKey||e.ctrlKey||e.altKey||e.repeat)return;
   const c=e.code;
+  if(!$('#langsheet').hidden&&c==='Escape'){e.preventDefault();closeLang();return}
   if(c==='KeyF'&&document.body.classList.contains('fsok')){e.preventDefault();toggleFs();return}
   if(!$('#setmenu').hidden&&c==='Escape'){e.preventDefault();closeSettings();return}
   if(document.body.classList.contains('help')&&c==='Escape'){e.preventDefault();closeHelp();return}
@@ -1091,7 +1136,8 @@ const IC={
   sndOff:'<path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m16 9 5 6M21 9l-5 6"/>',
   hapOn:'<rect x="7.5" y="3" width="9" height="18" rx="2.2"/><path d="M4 8.5v7M20 8.5v7M1.2 10.5v3M22.8 10.5v3"/><path d="M11 18h2"/>',
   hapOff:'<rect x="7.5" y="3" width="9" height="18" rx="2.2"/><path d="M11 18h2"/><path d="m3 3 18 18"/>',
-  reset:'<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>'
+  reset:'<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'
 };
 function paintSound(){
   $('#icoSnd').innerHTML=svg(SFX.on?IC.sndOn:IC.sndOff);
@@ -1108,6 +1154,7 @@ const isNative=()=>{try{return !!(window.Capacitor&&window.Capacitor.isNativePla
 if(isNative())document.body.classList.add('native');
 $('#rowSnd').onclick=toggleSound;$('#rowHap').onclick=toggleHap;
 $('#helpClose').innerHTML=svg('<path d="M6 6l12 12M18 6 6 18"/>');
+$('#icoLang').innerHTML=svg(IC.globe);
 $('#setbtn').innerHTML=svg(IC.gear);$('#wset').innerHTML=svg(IC.gear);$('#rbtn').innerHTML=svg(IC.reset);
 paintSound();paintHap();
 
@@ -1129,7 +1176,7 @@ applyTheme(theme,false);
 /* ---------- tam ekran (yalnızca tarayıcı) ---------- */
 const FS_IN='<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>';
 const FS_OUT='<path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>';
-function paintFs(){const b=$('#fsbtn');if(b){b.innerHTML=svg(document.fullscreenElement?FS_OUT:FS_IN);b.title=document.fullscreenElement?'Tam ekrandan çık (F)':'Tam ekran (F)'}}
+function paintFs(){const b=$('#fsbtn');if(b){b.innerHTML=svg(document.fullscreenElement?FS_OUT:FS_IN);b.title=document.fullscreenElement?tx('fsExit'):tx('fsEnter');b.setAttribute('aria-label',b.title)}}
 function toggleFs(){
   try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}
 }
@@ -1161,8 +1208,8 @@ let splashOn=true,welcomeOn=true;
 function updateWelcome(){
   const done=Math.min(best,TOTAL);
   $('#wbar').style.width=(100*done/TOTAL)+'%';
-  $('#wtxt').textContent=`${done} / ${TOTAL} bölüm tamamlandı`+(totalStars()?`  ·  ★ ${totalStars()}`:'');
-  $('#wplay').textContent=done>=TOTAL?'Tekrar oyna':done>0?`Devam et · Bölüm ${resumeIdx()+1}`:'Oyna';
+  $('#wtxt').textContent=tx('prog',{d:done,t:TOTAL})+(totalStars()?`  ·  ★ ${totalStars()}`:'');
+  $('#wplay').textContent=done>=TOTAL?tx('again'):done>0?tx('cont',{n:resumeIdx()+1}):tx('play');
 }
 function showWelcome(){
   welcomeOn=true;updateWelcome();
@@ -1191,7 +1238,7 @@ const _w=[94, 84, 89, 80, 83, 64, 71, 94, 84, 91, 27, 82, 92, 65, 93, 64, 87, 27
 // Kilit/bant mesajı için resmî adres: birbirinden bağımsız kopyalardan, özeti tutan ilki seçilir (biri bozulsa bile doğrusu görünür)
 const _official=()=>{const c=[_d(_u),_d2(_w),'kalefurkan.github.io/kod-noktasi-oyun'];for(const x of c){if(_cy(x)===_EU)return x}return c[2]};
 const _seal=()=>_cy(_d(_n)+'|'+_d(_u)+'|'+_y);
-const _crText=m=>{const n=_d(_n);return m==='long'?n+' tarafından geliştirildi':m==='short'?n:m==='about'?'Geliştirici: '+n+'  ·  © '+_y:'kod noktası  ·  '+n};
+const _crText=m=>{const n=_d(_n);return m==='long'?tx('crLong',{n}):m==='short'?n:m==='about'?tx('crAbout',{n,y:_y}):'kod noktası  ·  '+n};
 const _crHosts=[];
 function _crAdd(el,par,mode,cls,mk){if(!el){el=document.createElement('div');el.className='cr '+cls;mk=true}_crHosts.push({el,par,mode,cls,mk});}
 function _crFix(){
@@ -1203,7 +1250,7 @@ function _crFix(){
 function _tamper(){
   if(document.getElementById('tamper'))return;
   const d=document.createElement('div');d.id='tamper';
-  d.innerHTML='<div>Bu kopya değiştirilmiş görünüyor.<br><br>Orijinal oyun için:<br><span style="opacity:.85;font-weight:500">'+_official()+'</span></div>';
+  d.innerHTML='<div>'+tx('tmp1')+'<br><br>'+tx('tmp2')+'<br><span style="opacity:.85;font-weight:500">'+_official()+'</span></div>';
   document.body.appendChild(d);
   try{lock=true}catch(e){}
 }
@@ -1212,7 +1259,7 @@ const _hb=h=>{ // resmî olmayan bir alan adında yayınlanıyorsa kaldırılama
   let b=document.getElementById('crban');
   if(okH.indexOf(h)<0){
     if(!b){b=document.createElement('div');b.id='crban';b.className='crban';document.body.appendChild(b)}
-    b.textContent='Orijinal oyun: Furkan KALE  —  '+_official();
+    b.textContent=tx('banner',{n:_d(_n),u:_official()});
   }
 };
 function _g(){
@@ -1228,6 +1275,39 @@ _g();setInterval(_g,1500);
 try{new MutationObserver(()=>_crFix()).observe(document.body,{childList:true,subtree:true})}catch(e){}
 try{console.log('%c'+_d(_n)+'  ·  Kod Noktası','font:700 14px system-ui;color:#18a6d9')}catch(e){}
 
+/* ---------- dil seçici ve uygulama ---------- */
+const shortLang=n=>n.length>12?n.split(/[ (]/)[0]:n;
+function applyLang(){
+  document.documentElement.setAttribute('lang',lang);
+  document.body.classList.toggle('rtl',lang==='ar');
+  document.querySelectorAll('[data-i]').forEach(e=>{e.textContent=tx(e.dataset.i)});
+  document.querySelectorAll('[data-it]').forEach(e=>{const v=tx(e.dataset.it);e.title=v;e.setAttribute('aria-label',v)});
+  const ws=$('#wsub');if(ws)ws.innerHTML=tx('tag1')+'<br>'+tx('tag2');
+  const lv=$('#langVal');if(lv)lv.textContent=shortLang(LANG_LIST.find(l=>l.id===lang).name);
+  if(typeof LVL!=='undefined'&&LVL){
+    head();renderCode();legend();
+    if(mode==='play'&&idx===0)setStatus(LVL.feats.intro?tx(LVL.feats.intro,kwp()):tx('stDefault'));
+    autoFit();
+  }
+  updateWelcome();_crFix();paintFs();
+  if(menuOn)drawMenu();
+}
+function setLang(id){
+  if(!LANG_IDS.includes(id))return;
+  lang=id;
+  try{localStorage.setItem('kn_lang',id)}catch(e){}
+  try{const n=NP();if(n)n.set({key:'kn_lang',value:id})}catch(e){}
+  applyLang();
+}
+function openLang(){
+  closeSettings();
+  $('#langGrid').innerHTML=LANG_LIST.map(l=>`<button data-l="${l.id}" lang="${l.id}" class="${l.id===lang?'on':''}">${l.name}</button>`).join('');
+  document.querySelectorAll('#langGrid button').forEach(b=>b.onclick=()=>{setLang(b.dataset.l);closeLang()});
+  $('#langsheet').hidden=false;
+}
+function closeLang(){$('#langsheet').hidden=true}
+$('#rowLang').onclick=openLang;
+addEventListener('pointerdown',e=>{if(!$('#langsheet').hidden&&!e.target.closest('#langsheet,#rowLang'))closeLang()},true);
 function relayout(){
   if(!LVL)return;
   compact=false;document.body.classList.remove('compact');
@@ -1236,12 +1316,14 @@ function relayout(){
   if(mode==='won')$('#board').classList.add('won');
 }
 let rzT=0;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(relayout,120)});
+applyLang();
 loadLevel(resumeIdx());
 $('#welcome').hidden=false;updateWelcome();
 setTimeout(endSplash,2900);
 // telefon uygulaması: kayıtları Capacitor Preferences'tan sürüm kontrolüyle yükle
 function loadNative(){
   const n=NP();if(!n)return;
+  n.get({key:'kn_lang'}).then(r=>{if(r&&LANG_IDS.includes(r.value)&&r.value!==lang){lang=r.value;try{localStorage.setItem('kn_lang',lang)}catch(e){}applyLang()}}).catch(()=>{});
   n.get({key:'kn_theme'}).then(r=>{if(r&&THEMES.includes(r.value)&&r.value!==theme){applyTheme(r.value,false);try{localStorage.setItem('kn_theme',r.value)}catch(e){}}}).catch(()=>{});
   n.get({key:'kn_ver'}).then(r=>{
     if(!r||r.value!==DATA_VER){            // eski sürüm kaydı: sıfırla
