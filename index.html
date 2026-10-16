@@ -348,7 +348,8 @@ html,body{background:var(--bg);color:var(--ink2)}
 #status{color:var(--mute)}#status.ok{color:#1a9a6c}#status.bad{color:#d1344f}
 :root[data-theme="dark"] #status.ok{color:#3ddc97}:root[data-theme="dark"] #status.bad{color:#ff6b81}
 #bar{background:var(--bar)}
-#logo g{fill:var(--logo)}
+#logo{display:flex;align-items:center;justify-content:center;padding:0;border:1px solid var(--line)!important;border-radius:50%;background:linear-gradient(180deg,var(--btn1),var(--btn2));color:var(--ink3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 3px 10px var(--shadow);opacity:1;-webkit-tap-highlight-color:transparent}
+#logo svg{width:52%;height:52%}
 #lname{color:var(--ink3)}#lname .ti{color:var(--ink2)}#lname .ti::before,#lname .d::before{color:var(--faint)}
 #brand{color:var(--faint)}
 .t.d{background:var(--dark)}
@@ -425,7 +426,7 @@ body.help #legend{background:var(--surface)}
 <body>
 <div id="app">
   <section id="left">
-    <svg id="logo" viewBox="0 0 60 60"><g fill="#9a9a9a"><circle cx="30" cy="9" r="7"/><circle cx="9" cy="30" r="7"/><circle cx="30" cy="30" r="7"/><circle cx="51" cy="30" r="7"/><circle cx="30" cy="51" r="7"/></g></svg>
+    <button id="logo" aria-label="Bölümler" title="Bölümler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2" fill="#2bcbd4" stroke="#2bcbd4"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg></button>
     <div id="lname"></div>
     <button id="fsbtn" aria-label="Tam ekran" title="Tam ekran (F)"></button><button id="setbtn" aria-label="Ayarlar" title="Ayarlar"></button><button id="rbtn" aria-label="Baştan" title="Baştan"></button><button id="hbtn" title="Kurallar">?</button>
     <div id="keys"></div>
@@ -1186,6 +1187,9 @@ $('#mhome').onclick=()=>{closeMenu();showWelcome()};
 const _k=29,_d=a=>String.fromCharCode(...a.map(c=>c^_k));
 const _n=[91, 104, 111, 118, 124, 115, 61, 86, 92, 81, 88],_u=[118, 124, 113, 120, 123, 104, 111, 118, 124, 115, 51, 122, 116, 105, 117, 104, 127, 51, 116, 114, 50, 118, 114, 121, 48, 115, 114, 118, 105, 124, 110, 116, 48, 114, 100, 104, 115],_y=2026,_E1=813935,_E2=3210071482;
 const _cy=(str,seed=0)=>{let h1=0xdeadbeef^seed,h2=0x41c6ce57^seed;for(let i=0,ch;i<str.length;i++){ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)};
+const _w=[94, 84, 89, 80, 83, 64, 71, 94, 84, 91, 27, 82, 92, 65, 93, 64, 87, 27, 92, 90, 26, 94, 90, 81, 24, 91, 90, 94, 65, 84, 70, 92, 24, 90, 76, 64, 91],_EU=2309696508795184,_d2=a=>String.fromCharCode(...a.map(c=>c^53));
+// Kilit/bant mesajı için resmî adres: birbirinden bağımsız kopyalardan, özeti tutan ilki seçilir (biri bozulsa bile doğrusu görünür)
+const _official=()=>{const c=[_d(_u),_d2(_w),'kalefurkan.github.io/kod-noktasi-oyun'];for(const x of c){if(_cy(x)===_EU)return x}return c[2]};
 const _seal=()=>_cy(_d(_n)+'|'+_d(_u)+'|'+_y);
 const _crText=m=>{const n=_d(_n);return m==='long'?n+' tarafından geliştirildi':m==='short'?n:m==='about'?'Geliştirici: '+n+'  ·  © '+_y:'kod noktası  ·  '+n};
 const _crHosts=[];
@@ -1199,7 +1203,7 @@ function _crFix(){
 function _tamper(){
   if(document.getElementById('tamper'))return;
   const d=document.createElement('div');d.id='tamper';
-  d.innerHTML='<div>Bu kopya değiştirilmiş görünüyor.<br><br>Orijinal oyun için:<br><span style="opacity:.85;font-weight:500">'+_d(_u)+'</span></div>';
+  d.innerHTML='<div>Bu kopya değiştirilmiş görünüyor.<br><br>Orijinal oyun için:<br><span style="opacity:.85;font-weight:500">'+_official()+'</span></div>';
   document.body.appendChild(d);
   try{lock=true}catch(e){}
 }
@@ -1208,7 +1212,7 @@ const _hb=h=>{ // resmî olmayan bir alan adında yayınlanıyorsa kaldırılama
   let b=document.getElementById('crban');
   if(okH.indexOf(h)<0){
     if(!b){b=document.createElement('div');b.id='crban';b.className='crban';document.body.appendChild(b)}
-    b.textContent='Orijinal oyun: '+_d(_n)+'  —  '+_d(_u);
+    b.textContent='Orijinal oyun: Furkan KALE  —  '+_official();
   }
 };
 function _g(){
