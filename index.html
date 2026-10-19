@@ -858,6 +858,9 @@ function wrong(){
 function win(){
   tmTick();mode='won';head();$('#board').classList.add('won');$('#dot').classList.add('check');SFX.win();
   if(best<li+1){best=li+1;saveBest()}
+  // yıldızı bölüm bitince hemen kaydet (bölüm sonu ekranı gecikmeli açılır; o sırada çıkılırsa yıldız kaybolmasın)
+  {const r=starsFor(li,tries,tm.acc),prev=starsMap[li]||0;winRes={r,prev,before:totalStars()};
+   if(r.stars>prev){starsMap[li]=r.stars;saveStars()}}
   setStatus((li===TOTAL-1?tx('stAll'):tx('stOk'))+' · '+fmt(tm.acc),'ok');
   nextTimer=setTimeout(showEnd,1300);
 }
@@ -875,13 +878,14 @@ function starsFor(i,tries,ms){
   const sc=.6*as+.4*ts;
   return{stars:sc>=.8?3:sc>=.5?2:1,score:sc,T};
 }
-let starsMap={};
+let starsMap={},winRes=null;
 try{starsMap=JSON.parse(localStorage.getItem('kn_stars')||'{}')||{}}catch(e){}
 function saveStars(){
   const j=JSON.stringify(starsMap);
   try{localStorage.setItem('kn_stars',j)}catch(e){}
   try{const n=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Preferences;if(n)n.set({key:'kn_stars',value:j})}catch(e){}
 }
+function repairStars(){let ch=false;for(let i=0;i<best&&i<TOTAL;i++)if(!starsMap[i]){starsMap[i]=1;ch=true}if(ch)saveStars()}
 const totalStars=()=>Object.values(starsMap).reduce((a,b)=>a+b,0);
 const levelUnlocked=k=>UNLOCK_ALL||k===0||totalStars()>=NEED[k];
 const chapterOpen=i=>UNLOCK_ALL||(levelUnlocked(levelOf(i))&&i<=best);
@@ -897,9 +901,9 @@ const STAR_SVG='<svg viewBox="0 0 24 24"><path class="bg" d="M12 2.6l2.8 6 6.6.8
 function showEnd(){
   if(typeof _g==='function'&&!_g())return;
   if(mode!=='won'||endOn)return;
-  const r=starsFor(li,tries,tm.acc),prev=starsMap[li]||0;
-  const before=totalStars();
-  if(r.stars>prev){starsMap[li]=r.stars;saveStars()}
+  const W=winRes||{r:starsFor(li,tries,tm.acc),prev:starsMap[li]||0,before:totalStars()};
+  const r=W.r,prev=W.prev,before=W.before;
+  if(r.stars>(starsMap[li]||0)){starsMap[li]=r.stars;saveStars()}
   const after=totalStars();
   const el=$('#endscreen');
   $('#eLevel').textContent=tx('chap',{n:li+1});
@@ -1316,6 +1320,7 @@ function relayout(){
   if(mode==='won')$('#board').classList.add('won');
 }
 let rzT=0;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(relayout,120)});
+repairStars();
 applyLang();
 loadLevel(resumeIdx());
 $('#welcome').hidden=false;updateWelcome();
@@ -1335,6 +1340,7 @@ function loadNative(){
     return Promise.all([n.get({key:'kn2'}),n.get({key:'kn_stars'})]).then(([a,b])=>{
       if(a&&a.value!=null&&!isNaN(+a.value))best=+a.value;
       if(b&&b.value){try{const m=JSON.parse(b.value);for(const k in m)starsMap[k]=Math.max(starsMap[k]||0,m[k])}catch(e){}}
+      repairStars();
       try{localStorage.setItem('kn2',best);localStorage.setItem('kn_stars',JSON.stringify(starsMap))}catch(e){}
       if(mode==='play'&&idx===0)loadLevel(resumeIdx());
       updateWelcome();
