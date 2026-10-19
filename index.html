@@ -253,7 +253,7 @@ body.native .kbhint,body.native #mhint,body.native #legend .keys{display:none}
 @media(max-height:700px){.eLevel{margin-bottom:10px}.eMsg{margin-bottom:10px}.eBest{margin-bottom:12px}.eStars .st{width:68px;height:68px}.eStars .st:nth-child(2){margin-bottom:12px}}
 #mgrid b{flex-direction:column;line-height:1.05}
 #mgrid b i{font-style:normal}
-#mgrid b s{display:block;text-decoration:none;font-size:max(8px,.85vmax);letter-spacing:-.06em;color:#fff3b0;margin-top:2px;text-shadow:0 1px 2px rgba(0,0,0,.2)}
+#mgrid b s{display:block;text-decoration:none;font-size:max(12px,1.2vmax);letter-spacing:0;line-height:1;color:#fff3b0;margin-top:2px;text-shadow:0 1px 2px rgba(0,0,0,.2)}
 /* ================= level sistemi ================= */
 #menu h2{font-size:clamp(20px,5vw,26px)}
 #mtop{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;width:100%}
@@ -283,7 +283,7 @@ body.native .kbhint,body.native #mhint,body.native #legend .keys{display:none}
 .lbadge svg{width:24px;height:24px}
 #mgrid{grid-template-columns:repeat(5,clamp(48px,14vw,76px))!important;gap:10px!important;width:auto!important}
 #mgrid b{font-size:clamp(16px,4.6vw,22px)!important}
-#mgrid b s{font-size:10px!important}
+#mgrid b s{font-size:16px!important;margin-top:3px}
 #lvlList[hidden],#mgrid[hidden],#mback[hidden]{display:none!important}
 #mtoast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translate(-50%,20px);max-width:88vw;padding:12px 18px;border-radius:14px;background:#2c3550;color:#fff;font:600 14px/1.35 -apple-system,BlinkMacSystemFont,system-ui,sans-serif;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:70}
 #mtoast.on{opacity:1;transform:translate(-50%,0)}
@@ -1000,7 +1000,7 @@ function pickLevel(k){
 function drawChapters(){
   const k=menuLv;let h='';
   for(let i=lvFirst(k);i<=lvLast(k);i++){
-    h+=`<b class="${i<best?'done':chapterOpen(i)?'':'lock'} ${i===msel?'sel':''}" data-i="${i}"><i>${i+1}</i>${starsMap[i]&&i<best?`<s>${starStr(starsMap[i])}</s>`:''}</b>`;
+    h+=`<b class="${i<best?'done':chapterOpen(i)?'':'lock'} ${i===msel?'sel':''}" data-i="${i}"><i>${i+1}</i>${starsMap[i]&&i<best?`<s>${'★'.repeat(starsMap[i])}</s>`:''}</b>`;
   }
   $('#mgrid').innerHTML=h;
   document.querySelectorAll('#mgrid b').forEach(e=>e.onclick=()=>pickChapter(+e.dataset.i));
